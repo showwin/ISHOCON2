@@ -23,6 +23,7 @@ type myEvent struct {
 
 func main() {
 	lambda.Start(HandleRequest)
+	db.Close()
 }
 
 // HandleRequest handler
