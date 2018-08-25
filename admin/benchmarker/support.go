@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"database/sql"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -30,12 +31,19 @@ type Candidate struct {
 	Sex   string
 }
 
-func getDBClient() (*sql.DB, error) {
+var db *sql.DB
+
+func init() {
 	dbUser := os.Getenv("MYSQL_USER")
 	dbPass := os.Getenv("MYSQL_PASS")
 	dbHost := os.Getenv("MYSQL_HOST")
-	return sql.Open("mysql", dbUser+":"+dbPass+"@tcp("+dbHost+":3306)/ishocon2")
+	var err error
+	db, err = sql.Open("mysql", dbUser+":"+dbPass+"@tcp("+dbHost+":3306)/ishocon2")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
+
 
 func postMessage(message string) {
 	now := time.Now().Unix()
@@ -72,12 +80,6 @@ func flushMessage() {
 
 func setupVotes(size int, forValidate bool) []Vote {
 	var voteSet []Vote
-
-	db, err := getDBClient()
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
 
 	// size 人数分の投票者を選ぶ
 	query := "SELECT name, address, mynumber, votes FROM users WHERE id IN ("
@@ -182,14 +184,8 @@ func getRandKeyword() string {
 }
 
 func getCndInfo(name string) Candidate {
-	db, err := getDBClient()
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
-
 	var c Candidate
-	err = db.QueryRow("SELECT * FROM candidates WHERE name = ? LIMIT 1", name).Scan(&c.ID, &c.Name, &c.Party, &c.Sex)
+	err := db.QueryRow("SELECT * FROM candidates WHERE name = ? LIMIT 1", name).Scan(&c.ID, &c.Name, &c.Party, &c.Sex)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -198,14 +194,8 @@ func getCndInfo(name string) Candidate {
 
 // 候補者名から政党名を返す
 func getPatryInfo(name string) string {
-	db, err := getDBClient()
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
-
 	var party string
-	err = db.QueryRow("SELECT political_party FROM candidates WHERE name = ? LIMIT 1", name).Scan(&party)
+	err := db.QueryRow("SELECT political_party FROM candidates WHERE name = ? LIMIT 1", name).Scan(&party)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -213,12 +203,6 @@ func getPatryInfo(name string) string {
 }
 
 func membersOf(party string) (members []string) {
-	db, err := getDBClient()
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
-
 	rows, err := db.Query("SELECT name FROM candidates WHERE political_party = ?", party)
 	if err != nil {
 		panic(err.Error())
