@@ -5,10 +5,10 @@
 
 ## インスタンスの作成
 AWSのイメージのみ作成しました。
-* アプリケーションAMI: `ami-0ec5ab0a6192bf279`
+* アプリケーションAMI: `ami-09568651b65f0daf1`
 * ベンチマーカーAMI: `ami-78b66107`
 * アプリケーション、ベンチマーカー共に以下のスペック
-  * Instance Type: c4.large
+  * Instance Type: c5.large
   * Root Volume: 8GB, General Purpose SSD (GP2)
 
 要望があればGCPでもイメージを作成するかもしれません。
