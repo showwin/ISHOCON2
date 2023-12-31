@@ -2,7 +2,8 @@ FROM showwin/ishocon2_app_base:latest
 ENV APP_LANG 'Python'
 
 # Python のインストール
-RUN sudo apt-get install -y zlib1g-dev
+RUN sudo apt-get update
+RUN apt-get install -y zlib1g-dev
 RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
     PYENV_ROOT="$HOME/.pyenv" && PATH="$PYENV_ROOT/bin:$PATH" && \
     eval "$(pyenv init -)" && \
