@@ -14,7 +14,7 @@ echo "app_lang: $app_lang"
 
 function run_ruby() {
   bundle install
-  unicorn -c unicorn_config.rbs
+  unicorn -c unicorn_config.rb
   echo "$check_message"
 }
 
