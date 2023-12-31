@@ -20,5 +20,5 @@ jobs:
       - run: make build
       - run: docker compose up -d && sleep 10
         timeout-minutes: 5
-      - run: docker exec -it ishocon2_bench_1 ./benchmark --ip app:443
+      - run: docker exec -it ishocon2-bench-1 ./benchmark --ip app:443
         timeout-minutes: 5
