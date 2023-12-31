@@ -1,0 +1,38 @@
+name: Benchmark
+
+on:
+    workflow_dispatch:
+    push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    name: Run benchmark
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - "crystal"
+          - "go"
+          - "nodejs"
+          - "php"
+          - "python"
+          - "python_sanic"
+          - "ruby"
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo 'Run benchmark for ISHOCON2'
+      - run: |
+         sed -i 's/python/'"$ISHOCON_APP_LANG"'/g' ./docker-compose.yml
+         cat ./docker-compose.yml
+         make build
+        env:
+            ISHOCON_APP_LANG: ${{ matrix.language }}
+      - run: make up && sleep 30
+      - run: make bench
+        timeout-minutes: 5

@@ -2,6 +2,7 @@ FROM showwin/ishocon2_app_base:latest
 ENV APP_LANG 'Ruby'
 
 # Ruby のインストール
+RUN sudo apt-get update
 RUN sudo apt-get install -y ruby-dev libmysqlclient-dev && \
     git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 RUN PATH="$HOME/.rbenv/bin:$PATH" && \
@@ -20,6 +21,8 @@ RUN cd /home/ishocon/webapp/ruby && sudo gem install bundler -v "1.16.1" && bund
 
 WORKDIR /home/ishocon
 EXPOSE 443
+
+COPY run.sh /home/ishocon/run.sh
 
 COPY docker/app/entrypoint.sh /home/ishocon/docker/app/entrypoint.sh
 ENTRYPOINT ["/home/ishocon/docker/app/entrypoint.sh"]

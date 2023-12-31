@@ -4,7 +4,10 @@ services:
     build: 
       context: .
       dockerfile: ./docker/app/python/Dockerfile
-    command: tail -f /dev/null
+    environment:
+      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
+    command: [/home/ishocon/run.sh]
+    tty: true
     volumes:
       - storage_app:/var/lib/mysql
       - ./webapp:/home/ishocon/webapp

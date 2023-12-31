@@ -43,6 +43,6 @@ $ docker exec -it ishocon2_app_1 /bin/bash
 ## ベンチマーカー
 
 ```
-$ docker exec -it ishocon2_bench_1 /bin/bash
+$ docker exec -it ishocon2-bench-1 /bin/bash
 $ ./benchmark --ip app:443  # docker-compose.yml で link しているので app で到達できます
 ```
