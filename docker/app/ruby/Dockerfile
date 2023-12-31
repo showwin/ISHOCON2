@@ -22,6 +22,8 @@ RUN cd /home/ishocon/webapp/ruby && sudo gem install bundler -v "1.16.1" && bund
 WORKDIR /home/ishocon
 EXPOSE 443
 
+COPY run.sh /home/ishocon/run.sh
+
 COPY docker/app/entrypoint.sh /home/ishocon/docker/app/entrypoint.sh
 ENTRYPOINT ["/home/ishocon/docker/app/entrypoint.sh"]
 

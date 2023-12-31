@@ -23,6 +23,5 @@ COPY admin/config/nginx.conf /etc/nginx/nginx.conf
 
 # 各言語のインストールに必要なもの下準備
 RUN apt-get install -y curl git gcc make libssl-dev libreadline-dev
-COPY run.sh /home/ishocon/run.sh
 
 USER ishocon

@@ -24,6 +24,8 @@ RUN LC_ALL=C.UTF-8 && LANG=C.UTF-8 && cd /home/ishocon/webapp/python && \
 WORKDIR /home/ishocon
 EXPOSE 443
 
+COPY run.sh /home/ishocon/run.sh
+
 COPY docker/app/entrypoint.sh /home/ishocon/docker/app/entrypoint.sh
 ENTRYPOINT ["/home/ishocon/docker/app/entrypoint.sh"]
 
