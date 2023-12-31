@@ -26,7 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: make build
-      - run: docker compose up -d && sleep 10
-        timeout-minutes: 5
-      - run: docker exec -it ishocon2-bench-1 ./benchmark --ip app:443
+      - run: make up && sleep 10
+      - run: make bench
         timeout-minutes: 5
