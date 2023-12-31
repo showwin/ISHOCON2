@@ -26,7 +26,7 @@ jobs:
           - "ruby"
     steps:
       - uses: actions/checkout@v2
-      - run: make build
+      - run: sed -i 's/python/'"$ISUCON_APP_LANG"'/g' ./docker-compose.yml  && make build
         env:
             ISHOCON_APP_LANG: run_${{ matrix.language }}
       - run: make up && sleep 10
