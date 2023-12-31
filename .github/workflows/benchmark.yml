@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
-      - run: docker compose build
+      - run: make build
       - run: docker compose up -d && sleep 10
         timeout-minutes: 5
       - run: docker exec -it ishocon2_bench_1 ./benchmark --ip app:443
