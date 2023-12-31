@@ -14,7 +14,7 @@ echo "app_lang: $app_lang"
 
 function run_ruby() {
   bundle install
-  bundle exec puma -C config_puma.rb
+  unicorn -c unicorn_config.rbs
 }
 
 function run_python() {
