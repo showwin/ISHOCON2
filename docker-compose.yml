@@ -4,12 +4,14 @@ services:
     build: 
       context: .
       dockerfile: ./docker/app/python/Dockerfile
-    command: tail -f /dev/null
+    command: /home/ishocon/run.sh && tail -f /dev/null
     volumes:
       - storage_app:/var/lib/mysql
       - ./webapp:/home/ishocon/webapp
     ports:
       - "443:443"
+    environment:
+      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
 
   bench:
     image: showwin/ishocon2_bench:latest
