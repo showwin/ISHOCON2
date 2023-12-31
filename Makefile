@@ -3,3 +3,6 @@ common:
 
 build: common
 	docker compose build
+
+bench: build
+	docker exec -it ishocon2-bench-1 ./benchmark --ip app:443
