@@ -4,6 +4,8 @@ services:
     build: 
       context: .
       dockerfile: ./docker/app/python/Dockerfile
+    environment:
+      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
     command: /home/ishocon/run.sh
     tty: true
     volumes:
@@ -11,8 +13,6 @@ services:
       - ./webapp:/home/ishocon/webapp
     ports:
       - "443:443"
-    environment:
-      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
 
   bench:
     image: showwin/ishocon2_bench:latest
