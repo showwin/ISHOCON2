@@ -37,7 +37,6 @@ function run_go() {
 
 function run_php() {
   cat README.md
-  tail -f /dev/null
 }
 
 function run_crystal() {

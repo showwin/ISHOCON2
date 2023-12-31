@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: ./docker/app/python/Dockerfile
     command: /home/ishocon/run.sh
+    tty: true
     volumes:
       - storage_app:/var/lib/mysql
       - ./webapp:/home/ishocon/webapp
