@@ -22,10 +22,13 @@ jobs:
           - "nodejs"
           - "php"
           - "python"
+          - "python_sanic"
           - "ruby"
     steps:
       - uses: actions/checkout@v2
       - run: make build
+        env:
+            ISHOCON_APP_LANG: run_${{ matrix.language }}
       - run: make up && sleep 10
       - run: make bench
         timeout-minutes: 5
