@@ -37,7 +37,10 @@ function run_go() {
 }
 
 function run_php() {
-  cat README.md
+  sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+  sudo cp webapp/php/php-nginx.conf /etc/nginx/nginx.conf
+  sudo service nginx reload
+  echo "$check_message"
 }
 
 function run_crystal() {
