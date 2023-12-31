@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -eux
+
 sudo service nginx start
 sudo service mysql start
 sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld

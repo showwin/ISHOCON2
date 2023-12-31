@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -ux
+
 service mysql start  # なぜか失敗する(調査中)
 chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 service mysql start  # 正しく起動

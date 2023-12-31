@@ -50,9 +50,6 @@ function run_crystal() {
 }
 
 echo "run $app_lang app..."
-ls -alt /home/ishocon
-ls -alt "/home/ishocon/webapp"
-ls -alt "/home/ishocon/webapp/$app_lang"
 cd "/home/ishocon/webapp/$app_lang"
 
 "run_$app_lang"

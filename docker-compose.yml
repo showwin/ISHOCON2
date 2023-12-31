@@ -6,7 +6,7 @@ services:
       dockerfile: ./docker/app/python/Dockerfile
     environment:
       ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
-    command: /home/ishocon/run.sh
+    command: [/home/ishocon/run.sh]
     tty: true
     volumes:
       - storage_app:/var/lib/mysql
