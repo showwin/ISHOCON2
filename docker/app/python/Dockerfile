@@ -7,7 +7,7 @@ RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
     PYENV_ROOT="$HOME/.pyenv" && PATH="$PYENV_ROOT/bin:$PATH" && \
     eval "$(pyenv init -)" && \
     pyenv install 3.6.5 && pyenv global 3.6.5 && \
-    cd && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python get-pip.py && rm get-pip.py
+    cd && curl https://bootstrap.pypa.io/pip/3.6/get-pip.py -o get-pip.py && python get-pip.py && rm get-pip.py
 
 # アプリケーション
 RUN mkdir /home/ishocon/data /home/ishocon/webapp
