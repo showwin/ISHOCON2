@@ -38,7 +38,7 @@ function run_go() {
 
 function run_php() {
   sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-  sudo cp webapp/php/php-nginx.conf /etc/nginx/nginx.conf
+  sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
   sudo service nginx reload
   echo "$check_message"
 }
