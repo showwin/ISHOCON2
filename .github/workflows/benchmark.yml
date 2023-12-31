@@ -1,0 +1,24 @@
+name: Benchmark
+
+on:
+    workflow_dispatch:
+    push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    name: Run benchmark
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker compose build
+      - run: docker compose up -d
+        timeout-minutes: 5
+      - run: docker exec -it ishocon2_bench_1 ./benchmark --ip app:443
+        timeout-minutes: 5
