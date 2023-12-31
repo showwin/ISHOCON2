@@ -18,12 +18,12 @@ function run_ruby() {
 }
 
 function run_python() {
-  uwsgi --ini app.ini
+  /home/ishocon/.pyenv/shims/uwsgi --ini app.ini
   echo "$check_message"
 }
 
 function run_python_sanic() {
-  uwsgi --ini app.ini
+  /home/ishocon/.pyenv/shims/uwsgi --ini app.ini
   echo "$check_message"
 }
 
