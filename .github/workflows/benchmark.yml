@@ -17,12 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         language:
-          - "crystal"
-          - "go"
-          - "nodejs"
-          - "php"
-          - "python"
-          - "python_sanic"
+        #   - "crystal"
+        #   - "go"
+        #   - "nodejs"
+        #   - "php"
+        #   - "python"
+        #   - "python_sanic"
           - "ruby"
     steps:
       - uses: actions/checkout@v2
