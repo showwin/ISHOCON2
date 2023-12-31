@@ -15,6 +15,14 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
+      matrix:
+        language:
+          - "crystal"
+          - "go"
+          - "nodejs"
+          - "php"
+          - "python"
+          - "ruby"
     steps:
       - uses: actions/checkout@v2
       - run: make build
