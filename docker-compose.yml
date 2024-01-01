@@ -3,11 +3,11 @@ services:
   app:
     build: 
       context: .
-      dockerfile: ./docker/app/go/Dockerfile
+      dockerfile: ./docker/app/python/Dockerfile
     image: ishocon2-app:latest
     platform: linux/amd64
     environment:
-      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-go}"
+      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
     healthcheck:
       test: ["CMD", "test", "-f", "/tmp/ishocon-app"]
       interval: 30s
