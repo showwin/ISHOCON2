@@ -47,9 +47,9 @@ function run_php() {
 
 function run_nodejs() {
   cd "/home/ishocon/webapp/$app_lang"
-  npm install
+  sudo npm install
   make_tmp_file
-  node index.js
+  sudo node index.js
 }
 
 function run_crystal() {
