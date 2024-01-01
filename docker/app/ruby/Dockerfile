@@ -1,9 +1,22 @@
 FROM showwin/ishocon2_app_base:latest
 ENV APP_LANG 'Ruby'
 
-# Ruby のインストール
+# TZ の設定
+ENV TZ Asia/Tokyo
+
 RUN sudo apt-get update
-RUN sudo apt-get install -y ruby-dev libmysqlclient-dev && \
+
+# 日本語の設定
+RUN sudo apt-get install -y language-pack-ja && \
+    sudo update-locale LANG=ja_JP.UTF-8 && \
+    sudo rm -rf /var/lib/apt/lists/*
+ENV LANG="ja_JP.UTF-8" \
+    LANGUAGE="ja_JP:ja" \
+    LC_ALL="ja_JP.UTF-8"
+
+# Ruby のインストール
+RUN sudo apt-get update && \
+    sudo apt-get install -y ruby-dev libmysqlclient-dev && \
     git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
