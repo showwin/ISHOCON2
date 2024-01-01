@@ -39,7 +39,7 @@ function run_go() {
 function run_php() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-  sudo cp webapp/php/php-nginx.conf /etc/nginx/nginx.conf
+  sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
   make_tmp_file
   sudo service nginx reload
 }
