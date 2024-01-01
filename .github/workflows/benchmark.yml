@@ -38,5 +38,5 @@ jobs:
           tags: ${{ github.actor }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
       - run: make build
         timeout-minutes: 5
-      - run: make up bench-with-db-restart
+      - run: make up bench-with-db-init
         timeout-minutes: 10
