@@ -32,7 +32,8 @@ function run_python() {
 
 function run_go() {
   cd "/home/ishocon/webapp/$app_lang"
-  go build -o webapp *.go
+  # add sudo for output file is not created somehow because of permission denied
+  sudo go build -o webapp *.go
   make_tmp_file
   ./webapp
 }
