@@ -26,7 +26,13 @@ jobs:
     env:
       ISHOCON_APP_LANG: ${{ matrix.language }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v5.1.0
+        with:
+          context: .
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - run: make change-lang LANG=$ISHOCON_APP_LANG
       - run: make build
         timeout-minutes: 5
