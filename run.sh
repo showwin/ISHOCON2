@@ -50,7 +50,7 @@ function run_nodejs() {
   # (running from npm script also failed)
   sudo npm install -g express@4.16.3
   make_tmp_file
-  node index.js
+  sudo node index.js
 }
 
 function run_crystal() {
