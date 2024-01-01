@@ -43,6 +43,13 @@ function run_php() {
   sudo service nginx reload
 }
 
+function run_nodejs() {
+  cd "/home/ishocon/webapp/$app_lang"
+  npm install
+  make_tmp_file
+  node index.js
+}
+
 function run_crystal() {
   cd "/home/ishocon/webapp/$app_lang"
   shards install
