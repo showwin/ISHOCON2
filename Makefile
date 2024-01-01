@@ -5,7 +5,7 @@ build:
 	docker compose -f ./docker-compose.yml build;
 
 build-app:
-	docker build -f "./docker/app/$(LANG)/Dockerfile" -t ishocon-app:latest .;
+	docker build -f "./docker/app/$(LANG)/Dockerfile" -t ishocon2-app:latest .;
 
 up: build
 	docker compose up -d;

@@ -4,7 +4,7 @@ services:
     build: 
       context: .
       dockerfile: ./docker/app/go/Dockerfile
-    image: ishocon2_app:latest
+    image: ishocon2-app:latest
     platform: linux/amd64
     environment:
       ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-go}"
