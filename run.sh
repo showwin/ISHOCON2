@@ -43,7 +43,6 @@ function run_php() {
   sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
   make_tmp_file
   sudo service nginx reload
-  tail -f /dev/null
 }
 
 function run_nodejs() {
