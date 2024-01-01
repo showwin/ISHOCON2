@@ -5,7 +5,8 @@
   "description": "Iikanjina SHOwwin CONtest",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "express": "node index.js"
   },
   "keywords": [
     "ishocon"

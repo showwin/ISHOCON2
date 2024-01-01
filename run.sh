@@ -47,7 +47,7 @@ function run_php() {
 function run_nodejs() {
   cd "/home/ishocon/webapp/$app_lang"
   make_tmp_file
-  node index.js
+  npm run express
 }
 
 function run_crystal() {
