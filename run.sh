@@ -56,7 +56,7 @@ function run_nodejs() {
 
 function run_crystal() {
   cd "/home/ishocon/webapp/$app_lang"
-  shards install
+  sudo shards install
   make_tmp_file
   crystal app.cr
 }
