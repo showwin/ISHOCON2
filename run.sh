@@ -10,28 +10,28 @@ fi
 
 echo "app_lang: $app_lang"
 
+function make_tmp_file() {
+  touch /tmp/ishocon-app
+}
+
 function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
   bundle install
+  make_tmp_file
   unicorn -c unicorn_config.rb
-  echo $check_message
 }
 
 function run_python() {
   cd "/home/ishocon/webapp/$app_lang"
+  make_tmp_file
   /home/ishocon/.pyenv/shims/uwsgi --ini app.ini
 }
-
-function run_python_sanic() {
-  cd "/home/ishocon/webapp/${app_lang}_sanic"
-  /home/ishocon/.pyenv/shims/uwsgi --ini "app.ini"
-}
-
 
 function run_go() {
   cd "/home/ishocon/webapp/$app_lang"
   go get -t -d -v ./...
   go build -o webapp *.go
+  make_tmp_file
   ./webapp
 }
 
@@ -39,16 +39,16 @@ function run_php() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
   sudo cp webapp/php/php-nginx.conf /etc/nginx/nginx.conf
+  make_tmp_file
   sudo service nginx reload
 }
 
 function run_crystal() {
   cd "/home/ishocon/webapp/$app_lang"
   shards install
+  make_tmp_file
   crystal app.cr
 }
 
-echo "start running $app_lang app..."
+echo "starting running $app_lang app..."
 "run_${app_lang}"
-echo "completed to start running $app_lang app..."
-
