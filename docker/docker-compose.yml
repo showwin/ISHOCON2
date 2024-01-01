@@ -3,7 +3,7 @@ services:
   app:
     build: 
       context: .
-      dockerfile: ./docker/app/go/Dockerfile
+      dockerfile: ./app/go/Dockerfile
     platform: linux/amd64
     environment:
       ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-go}"
