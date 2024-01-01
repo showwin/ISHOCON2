@@ -32,10 +32,11 @@ function run_python() {
 
 function run_go() {
   cd "/home/ishocon/webapp/$app_lang"
-  # add sudo for output file is not created somehow because of permission denied
-  sudo go build -o webapp *.go
+  # put output file into /tmp/go for it cannot be created in webapp somehow because of permission denied
+  mkdir -p /tmp/go
+  go build -o /tmp/go/webapp *.go
   make_tmp_file
-  ./webapp
+  /tmp/go/webapp
 }
 
 function run_php() {
