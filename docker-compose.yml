@@ -24,7 +24,7 @@ services:
 
   bench:
     image: showwin/ishocon2_bench:latest
-    command: sh c service mysql restart && tail -f /dev/null
+    command: tail -f /dev/null
     volumes:
       - storage_bench:/var/lib/mysql
     links:
