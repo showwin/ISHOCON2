@@ -28,5 +28,5 @@ change-lang:
 		sed -i 's/\(ruby\|python\|go\|php\|nodejs\|crystal\)/'"$(LANG)"'/g' ./docker-compose.yml; \
 	else \
 		echo "BSD sed"; \
-		sed -i '' -E 's/\(ruby|python|go|php|nodejs|crystal)/'"$(LANG)"'/g' ./docker-compose.yml; \
+		sed -i '' -E 's/(ruby|python|go|php|nodejs|crystal)/'"$(LANG)"'/g' ./docker-compose.yml; \
 	fi;
