@@ -20,7 +20,8 @@ function make_tmp_file() {
 function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
   make_tmp_file
-  unicorn -c unicorn_config.rb
+  # add sudo for .pid file is not created somehow because of permission denied
+  sudo unicorn -c unicorn_config.rb
 }
 
 function run_python() {
