@@ -36,5 +36,5 @@ jobs:
       - run: make change-lang LANG=$ISHOCON_APP_LANG
       - run: make build
         timeout-minutes: 5
-      - run: make up bench-with-db-restart
+      - run: make up bench
         timeout-minutes: 10
