@@ -15,7 +15,8 @@ ENV LANG="ja_JP.UTF-8" \
     LC_ALL="ja_JP.UTF-8"
 
 # Ruby のインストール
-RUN sudo apt-get install -y ruby-dev libmysqlclient-dev && \
+RUN sudo apt-get update && \
+    sudo apt-get install -y ruby-dev libmysqlclient-dev && \
     git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
