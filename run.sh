@@ -2,6 +2,9 @@
 
 app_lang="${ISHOCON_APP_LANG}"
 
+# start mysql incase of if it not started
+sudo service mysql start
+
 if [ -z "$app_lang" ]
 then
   echo "ISHOCON_APP_LANG is not set"

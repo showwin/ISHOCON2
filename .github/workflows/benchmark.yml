@@ -29,6 +29,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: sed -i 's/python/'"$ISHOCON_APP_LANG"'/g' ./docker-compose.yml
       - run: make build
-      - run: docker compose --verbose up -d
+      - run: docker compose --verbose up
+        timeout-minutes: 10
       - run: make bench
         timeout-minutes: 5
