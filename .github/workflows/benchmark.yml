@@ -23,13 +23,12 @@ jobs:
           - "php"
           - "python"
           - "ruby"
+    env:
+      ISHOCON_APP_LANG: ${{ matrix.language }}
     steps:
       - uses: actions/checkout@v2
-      - run: echo 'Run benchmark for ISHOCON2'
       - run: sed -i 's/python/'"$ISHOCON_APP_LANG"'/g' ./docker-compose.yml
       - run: make build
-        env:
-            ISHOCON_APP_LANG: ${{ matrix.language }}
       - run: make up
       - run: make bench
         timeout-minutes: 5
