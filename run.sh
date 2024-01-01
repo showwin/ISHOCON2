@@ -47,11 +47,9 @@ function run_php() {
 
 function run_nodejs() {
   cd "/home/ishocon/webapp/$app_lang"
-  # express cannot be found somehow, so install it globally
-  # (running from npm script also failed)
-  sudo npm install -g express@4.16.3
+  npm install
   make_tmp_file
-  sudo node index.js
+  node index.js
 }
 
 function run_crystal() {
