@@ -3,6 +3,17 @@ FROM ubuntu:18.04
 RUN sudo apt-get update
 RUN apt-get install -y wget
 
+# TZ の設定
+ENV TZ Asia/Tokyo
+
+# 日本語の設定
+RUN sudo apt-get install -y language-pack-ja && \
+    sudo update-locale LANG=ja_JP.UTF-8 && \
+    sudo rm -rf /var/lib/apt/lists/*
+ENV LANG="ja_JP.UTF-8" \
+    LANGUAGE="ja_JP:ja" \
+    LC_ALL="ja_JP.UTF-8"
+
 # Go のインストール
 RUN wget -q https://dl.google.com/go/go1.13.15.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.13.15.linux-amd64.tar.gz
