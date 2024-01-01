@@ -4,7 +4,7 @@ services:
     build: 
       context: .
       dockerfile: ./docker/app/python/Dockerfile
-    image: ishocon2-app:latest
+    image: ishocon2-app-python:latest
     platform: linux/amd64
     environment:
       ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
