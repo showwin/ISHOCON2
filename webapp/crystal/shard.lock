@@ -6,7 +6,7 @@ shards:
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 0.23.0
+    version: 0.25.0
 
   kemal-session:
     git: https://github.com/kemalcr/kemal-session.git
