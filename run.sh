@@ -48,6 +48,9 @@ function run_php() {
 
 function run_nodejs() {
   cd "/home/ishocon/webapp/$app_lang"
+  # express cannot be found somehow, so install it globally
+  # (running from npm script also failed)
+  sudo npm install -g express@4.16.3
   make_tmp_file
   node index.js
 }
