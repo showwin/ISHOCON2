@@ -4,8 +4,16 @@ services:
     build: 
       context: .
       dockerfile: ./docker/app/ruby/Dockerfile
+    image: ishocon2-app-ruby:latest
+    platform: linux/amd64
     environment:
       ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-ruby}"
+    healthcheck:
+      test: ["CMD", "test", "-f", "/tmp/ishocon-app"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
     command: [/home/ishocon/run.sh]
     tty: true
     volumes:
@@ -23,6 +31,9 @@ services:
       - app
     environment: 
       - TARGET=app
+    depends_on:
+      app:
+        condition: service_healthy
 
 volumes:
   storage_bench:
