@@ -19,7 +19,6 @@ function make_tmp_file() {
 
 function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
-  bundle install
   make_tmp_file
   unicorn -c unicorn_config.rb
 }
@@ -32,7 +31,6 @@ function run_python() {
 
 function run_go() {
   cd "/home/ishocon/webapp/$app_lang"
-  go get -t -d -v ./...
   go build -o webapp *.go
   make_tmp_file
   ./webapp
@@ -48,14 +46,12 @@ function run_php() {
 
 function run_nodejs() {
   cd "/home/ishocon/webapp/$app_lang"
-  npm install
   make_tmp_file
   node index.js
 }
 
 function run_crystal() {
   cd "/home/ishocon/webapp/$app_lang"
-  shards install
   make_tmp_file
   crystal app.cr
 }
