@@ -15,3 +15,6 @@ down:
 
 bench:
 	docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443"
+
+change-lang:
+	gsed -i 's/\(ruby\|python\|go\|php\|nodejs\|crystal\)/'"$(LANG)"'/g' "$(CURDIR)/docker-compose.yml"
