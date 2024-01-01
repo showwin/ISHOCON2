@@ -13,7 +13,7 @@ services:
       timeout: 3s
       retries: 5
       start_period: 10s
-    command: [/home/ishocon/run.sh]
+    command: ["CMD", "sh", "-c", /home/ishocon/run.sh, "&&", "tail", "-f", "/dev/null"]
     tty: true
     volumes:
       - storage_app:/var/lib/mysql
