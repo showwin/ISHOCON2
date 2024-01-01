@@ -31,5 +31,5 @@ jobs:
       - run: make build
       - run: make up
         timeout-minutes: 5
-      - run: make bench
+      - run: make bench-with-restarting-db
         timeout-minutes: 5
