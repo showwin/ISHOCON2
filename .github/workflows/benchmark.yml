@@ -28,5 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: make change-lang LANG=$ISHOCON_APP_LANG
-      - run: make build up bench-with-db-restart
-        timeout-minutes: 15
+      - run: make build
+        timeout-minutes: 5
+      - run: make up bench-with-db-restart
+        timeout-minutes: 10
