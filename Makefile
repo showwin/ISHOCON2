@@ -1,8 +1,8 @@
 build-base:
-	docker build -f "$(CURDIR)/docker/app/base/Dockerfile" -t showwin/ishocon2_app_base:latest .;
+	docker build -f ./docker/app/base/Dockerfile" -t showwin/ishocon2_app_base:latest .;
 
 build:
-	docker compose -f "$(CURDIR)/docker-compose.yml" build;
+	docker compose -f ./docker-compose.yml build;
 
 up: build
 	docker compose up -d;
@@ -19,8 +19,8 @@ bench:
 change-lang:
 	if sed --version 2>&1 | grep -q GNU; then \
 		echo "GNU sed"; \
-		sed -i 's/\(ruby\|python\|go\|php\|nodejs\|crystal\)/'"$(LANG)"'/g' "$(CURDIR)/docker-compose.yml"; \
+		sed -i 's/\(ruby\|python\|go\|php\|nodejs\|crystal\)/'"$(LANG)"'/g' ./docker-compose.yml; \
 	else \
 		echo "BSD sed"; \
-		sed -i '' -E 's/\(ruby|python|go|php|nodejs|crystal)/'"go"'/g' docker-compose.yml; \
+		sed -i '' -E 's/\(ruby|python|go|php|nodejs|crystal)/'"go"'/g' ./docker-compose.yml; \
 	fi;
