@@ -7,10 +7,10 @@ build:
 build-app:
 	docker build -f "./docker/app/$(LANG)/Dockerfile" -t ishocon2-app:latest .;
 
-up: build
+up:
 	docker compose up -d;
 
-up-nod: build
+up-nod:
 	docker compose up;
 
 down: 
