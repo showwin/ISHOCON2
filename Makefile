@@ -2,9 +2,6 @@ build-base:
 	docker build -f "$(CURDIR)/docker/app/base/Dockerfile" -t showwin/ishocon2_app_base:latest .;
 
 build:
-	echo "current directory is $(CURDIR)";
-	pwd;
-	ls -alt;
 	docker compose -f "$(CURDIR)/docker-compose.yml" build;
 
 up: build

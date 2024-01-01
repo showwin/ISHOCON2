@@ -3,17 +3,17 @@ services:
   app:
     build: 
       context: .
-      dockerfile: ./docker/app/python/Dockerfile
+      dockerfile: ./docker/app/go/Dockerfile
     platform: linux/amd64
     environment:
-      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
+      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-go}"
     healthcheck:
       test: ["CMD", "test", "-f", "/tmp/ishocon-app"]
       interval: 30s
       timeout: 3s
       retries: 5
       start_period: 10s
-    command: ["CMD", "sh", "-c", /home/ishocon/run.sh, "&&", "tail", "-f", "/dev/null"]
+    command: ["CMD", "sh", "-c", /home/ishocon/run.sh]
     tty: true
     volumes:
       - storage_app:/var/lib/mysql
