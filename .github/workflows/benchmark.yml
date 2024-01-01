@@ -2,7 +2,7 @@ name: Benchmark
 
 on:
     workflow_dispatch:
-    push:
+    pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.sha }}
@@ -28,5 +28,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: make change-lang LANG=$ISHOCON_APP_LANG
-      - run: make build up bench
+      - run: make build up bench-with-db-restart
         timeout-minutes: 15

@@ -19,7 +19,7 @@ down:
 bench:
 	docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443";
 
-bench-with-restarting-db:
+bench-with-db-restart:
 	docker exec -i ishocon2-bench-1 sh -c "service mysql restart &&./benchmark --ip app:443";
 
 change-lang:
