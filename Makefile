@@ -7,6 +7,9 @@ build: common
 up: build
 	docker compose up -d
 
+up-nod: build
+	docker compose up
+
 down: 
 	docker compose down
 
