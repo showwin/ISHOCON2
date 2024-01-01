@@ -19,8 +19,8 @@ jobs:
         language:
           - "crystal"
           # - "go"
-          - "nodejs"
-          - "php"
+          # - "nodejs"
+          # - "php"
           # - "python"
           # - "ruby"
     env:
