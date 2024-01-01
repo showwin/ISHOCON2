@@ -28,8 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: make change-lang LANG=$(ISHOCON_APP_LANG)
-      - run: docker compose build
-        working-directory: docker
+      - run: make build
       - run: make up
         timeout-minutes: 10
       - run: make bench
