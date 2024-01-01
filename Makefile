@@ -1,7 +1,7 @@
-common:
+build-base:
 	docker build -f docker/app/base/Dockerfile -t showwin/ishocon2_app_base:latest .
 
-build: common
+build:
 	docker compose -f ./docker-compose.yml build
 
 up: build
