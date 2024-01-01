@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: make change-lang LANG=$ISHOCON_APP_LANG
-      - run: make build-app LANG=$ISHOCON_APP_LANG
+      - run: make build
       - run: make up
         timeout-minutes: 10
       - run: make bench
