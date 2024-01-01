@@ -56,7 +56,7 @@ function run_crystal() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo shards install
   make_tmp_file
-  crystal app.cr
+  sudo crystal app.cr
 }
 
 echo "starting running $app_lang app..."
