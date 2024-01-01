@@ -27,9 +27,9 @@ jobs:
       ISHOCON_APP_LANG: ${{ matrix.language }}
     steps:
       - uses: actions/checkout@v2
-      - run: sed -i 's/python/'"$ISHOCON_APP_LANG"'/g' ./docker-compose.yml
+      - run: make change-lang LANG=$(ISHOCON_APP_LANG)
       - run: make build
-      - run: docker compose --verbose up
+      - run: make up
         timeout-minutes: 10
       - run: make bench
         timeout-minutes: 5
