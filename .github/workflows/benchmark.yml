@@ -30,6 +30,6 @@ jobs:
       - run: make change-lang LANG=$ISHOCON_APP_LANG
       - run: make build
       - run: make up-nod
-        timeout-minutes: 10
+        timeout-minutes: 5
       - run: make bench
         timeout-minutes: 5
