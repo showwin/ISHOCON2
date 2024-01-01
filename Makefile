@@ -1,8 +1,11 @@
 build-base:
 	docker build -f ./docker/app/base/Dockerfile -t showwin/ishocon2_app_base:latest .;
 
-build: build-base
+build:
 	docker compose -f ./docker-compose.yml build;
+
+build-app:
+	docker build -f "./docker/app/$(LANG)/Dockerfile" -t ishocon-app:latest .;
 
 up: build
 	docker compose up -d;
