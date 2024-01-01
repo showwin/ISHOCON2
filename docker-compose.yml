@@ -14,7 +14,7 @@ services:
       timeout: 3s
       retries: 5
       start_period: 10s
-    command: sh -c "/home/ishocon/run.sh && tail -f /dev/null"
+    command: sh -c "/home/ishocon/run.sh"
     tty: true
     volumes:
       - storage_app:/var/lib/mysql
