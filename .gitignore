@@ -44,3 +44,6 @@ __pycache__/
 .DS_Store
 .python-version
 .idea
+
+# go
+/webapp/go/webapp

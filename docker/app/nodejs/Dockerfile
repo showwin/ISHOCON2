@@ -2,6 +2,7 @@ FROM showwin/ishocon2_app_base:latest
 ENV APP_LANG 'Node.js'
 
 # NodeJS のインストール
+RUN sudo apt-get update
 RUN sudo apt install -y nodejs-dev node-gyp libssl1.0-dev
 RUN sudo apt install -y nodejs npm
 
