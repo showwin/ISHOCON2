@@ -2,7 +2,7 @@ common:
 	docker build -f docker/app/base/Dockerfile -t showwin/ishocon2_app_base:latest .
 
 build: common
-	docker compose build
+	docker compose build --progress=plain
 
 up: build
 	docker compose up -d

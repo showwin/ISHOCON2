@@ -30,7 +30,9 @@ COPY webapp/ /home/ishocon/webapp
 COPY admin/config/bashrc /home/ishocon/.bashrc
 
 # ライブラリのインストール
-RUN cd /home/ishocon/webapp/ruby && sudo gem install bundler -v "1.16.1" && bundle install
+RUN cd /home/ishocon/webapp/ruby && \
+    . /home/ishocon/.bashrc && \
+    bash ./set_up_ruby.sh
 
 WORKDIR /home/ishocon
 EXPOSE 443

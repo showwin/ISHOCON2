@@ -10,10 +10,12 @@ fi
 
 check_message="start application w/ ${app_lang}..."
 
+source /home/ishocon/.bashrc
+
 echo "app_lang: $app_lang"
 
 function run_ruby() {
-  bundle install
+  rbenv global 3.1.4
   unicorn -c unicorn_config.rb
   echo "$check_message"
 }
