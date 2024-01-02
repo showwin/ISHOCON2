@@ -130,3 +130,37 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443"
 2024/01/02 01:34:25 投票者の感心がなくなりました
 2024/01/02 01:34:25 {"score": 17144, "success": 16072, "failure": 0}
 ```
+
+- workload と unicorn worker を増やすが、悪くなった
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 8"
+2024/01/02 01:40:43 Start GET /initialize
+2024/01/02 01:40:43 期日前投票を開始します
+2024/01/02 01:40:48 期日前投票が終了しました
+2024/01/02 01:40:48 投票を開始します  Workload: 8
+2024/01/02 01:41:42 投票が終了しました
+2024/01/02 01:41:42 投票者が結果を確認しています
+2024/01/02 01:41:57 投票者の感心がなくなりました
+2024/01/02 01:41:57 {"score": 12196, "success": 10148, "failure": 0}
+
+~/ghq/github.com/mickamy/ISHOCON2 imp1* 1m 15s
+```
+
+- workload: 4, unicorn: 12
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 4"
+2024/01/02 01:43:27 Start GET /initialize
+2024/01/02 01:43:27 期日前投票を開始します
+2024/01/02 01:43:55 期日前投票が終了しました
+2024/01/02 01:43:55 投票を開始します  Workload: 4
+2024/01/02 01:44:41 投票が終了しました
+2024/01/02 01:44:41 投票者が結果を確認しています
+2024/01/02 01:44:56 投票者の感心がなくなりました
+2024/01/02 01:44:56 {"score": 16942, "success": 16046, "failure": 0}
+
+~/ghq/github.com/mickamy/ISHOCON2 imp1* 1m 30s
+```

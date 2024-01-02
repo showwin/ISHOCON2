@@ -11,4 +11,4 @@ down:
 	docker compose down
 
 bench:
-	docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443"
+	docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 4"
