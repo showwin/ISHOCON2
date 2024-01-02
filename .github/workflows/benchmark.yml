@@ -34,5 +34,5 @@ jobs:
         env:
             ISHOCON_APP_LANG: ${{ matrix.language }}
       - run: make up && sleep 30
-      - run: make bench
+      - run: make bench-with-db-init
         timeout-minutes: 5
