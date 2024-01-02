@@ -423,3 +423,17 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
 2024/01/02 07:44:00 投票者の感心がなくなりました
 2024/01/02 07:44:00 {"score": 29668, "success": 25884, "failure": 0}
 ```
+
+- set content max age to /, /candidates/:id and /political_parties/:name 30742
+
+```
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 07:52:22 Start GET /initialize
+2024/01/02 07:52:23 期日前投票を開始します
+2024/01/02 07:52:24 期日前投票が終了しました
+2024/01/02 07:52:24 投票を開始します  Workload: 6
+2024/01/02 07:53:10 投票が終了しました
+2024/01/02 07:53:10 投票者が結果を確認しています
+2024/01/02 07:54:03 投票者の感心がなくなりました
+2024/01/02 07:54:03 {"score": 30742, "success": 26046, "failure": 0}
+```

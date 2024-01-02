@@ -106,6 +106,8 @@ SQL
   end
 
   get '/' do
+    cache_control :public, max_age: 60
+
     cs = []
     er = election_results
     er.each_with_index do |r, i|
@@ -134,6 +136,8 @@ SQL
   end
 
   get '/candidates/:id' do
+    cache_control :public, max_age: 60
+
     # candidate = db.xquery('SELECT * FROM candidates WHERE id = ?', params[:id]).first
     candidate = candidates.find { |c| c[:id] == params[:id] }
     return redirect '/' if candidate.nil?
@@ -145,6 +149,8 @@ SQL
   end
 
   get '/political_parties/:name' do
+    cache_control :public, max_age: 60
+
     votes = 0
     election_results.each do |r|
       votes += r[:count] || 0 if r[:political_party] == params[:name]
