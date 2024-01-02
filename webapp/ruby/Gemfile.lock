@@ -26,6 +26,7 @@ GEM
       raindrops (~> 0.7)
 
 PLATFORMS
+  arm64-darwin-22
   ruby
 
 DEPENDENCIES
@@ -36,7 +37,7 @@ DEPENDENCIES
   unicorn
 
 RUBY VERSION
-   ruby 3.1.4p223
+   ruby 3.2.2p53
 
 BUNDLED WITH
-   1.16.1
+   2.5.3

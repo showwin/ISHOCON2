@@ -16,12 +16,12 @@ ENV LANG="ja_JP.UTF-8" \
 
 # Ruby のインストール
 RUN sudo apt-get update && \
-    sudo apt-get install -y ruby-dev libmysqlclient-dev && \
+    sudo apt-get install -y ruby-dev libmysqlclient-dev libffi6 libffi-dev libyaml-dev && \
     git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
     git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build && \
-    rbenv install 3.1.4 && rbenv rehash && rbenv global 3.1.4
+    rbenv install 3.2.2 && rbenv rehash && rbenv global 3.2.2
 
 # YJIT の有効化
 ENV RUBY_YJIT_ENABLE=1
