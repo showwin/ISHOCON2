@@ -1,25 +1,32 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    base64 (0.2.0)
     erubis (2.7.0)
-    kgio (2.10.0)
-    mysql2 (0.4.4)
-    mysql2-cs-bind (0.0.6)
+    kgio (2.11.4)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
+    mysql2 (0.5.5)
+    mysql2-cs-bind (0.1.1)
       mysql2
-    rack (1.6.12)
-    rack-protection (1.5.5)
-      rack
-    raindrops (0.16.0)
-    sinatra (1.4.6)
-      rack (~> 1.4)
-      rack-protection (~> 1.4)
-      tilt (>= 1.3, < 3)
-    tilt (2.0.5)
-    unicorn (5.1.0)
+    rack (2.2.8)
+    rack-protection (3.2.0)
+      base64 (>= 0.1.0)
+      rack (~> 2.2, >= 2.2.4)
+    raindrops (0.20.1)
+    ruby2_keywords (0.0.5)
+    sinatra (3.2.0)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.2.0)
+      tilt (~> 2.0)
+    tilt (2.3.0)
+    unicorn (6.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
 
 PLATFORMS
+  arm64-darwin-22
   ruby
 
 DEPENDENCIES
@@ -29,5 +36,8 @@ DEPENDENCIES
   sinatra
   unicorn
 
+RUBY VERSION
+   ruby 3.2.2p53
+
 BUNDLED WITH
-   1.16.1
+   2.5.3

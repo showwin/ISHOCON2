@@ -3,24 +3,25 @@ services:
   app:
     build: 
       context: .
-      dockerfile: ./docker/app/python/Dockerfile
-    image: ishocon2-app-python:latest
+      dockerfile: ./docker/app/ruby/Dockerfile
+    image: ishocon2-app-ruby:latest
     platform: linux/amd64
     environment:
-      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
+      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-ruby}"
     healthcheck:
       test: ["CMD", "test", "-f", "/tmp/ishocon-app"]
       interval: 10s
       timeout: 3s
       retries: 5
-      start_period: 10s
-    command: sh -c "/home/ishocon/run.sh"
+      start_period: 30s
+    command: [/home/ishocon/run.sh]
     tty: true
     volumes:
-      - storage_app:/var/lib/mysql
+      # - storage_app:/var/lib/mysql
       - ./webapp:/home/ishocon/webapp
     ports:
       - "443:443"
+      - "3306:3306"
 
   bench:
     image: showwin/ishocon2_bench:latest
