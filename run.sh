@@ -16,8 +16,9 @@ echo "app_lang: $app_lang"
 
 function run_ruby() {
   rbenv global 3.1.4
+  rm -rf /home/ishocon/webapp/ruby/unicorn.pid
   unicorn -c unicorn_config.rb
-echo "app_lang: $app_lang"
+  echo "app_lang: $app_lang"
 
 function make_tmp_file() {
   touch /tmp/ishocon-app
