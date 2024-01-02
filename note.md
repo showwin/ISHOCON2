@@ -483,3 +483,18 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
 2024/01/02 09:12:13 {"score": 18968, "success": 16184, "failure": 0}
 ```
 
+- more cache on nginx 20442
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 09:41:10 Start GET /initialize
+2024/01/02 09:41:10 期日前投票を開始します
+2024/01/02 09:41:21 期日前投票が終了しました
+2024/01/02 09:41:21 投票を開始します  Workload: 6
+2024/01/02 09:42:07 投票が終了しました
+2024/01/02 09:42:07 投票者が結果を確認しています
+2024/01/02 09:42:30 投票者の感心がなくなりました
+2024/01/02 09:42:30 {"score": 20442, "success": 15346, "failure": 0}
+```
+

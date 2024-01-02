@@ -1,6 +1,7 @@
 #!/bin/bash -eux
 
-sudo mkdir -p /var/nginx/cache_1 /var/nginx/cache_2
+sudo mkdir -p /usr/share/nginx/var/nginx/cache_1 /usr/share/nginx/var/nginx/cache_2 /usr/share/nginx/var/nginx/cache_3 /usr/share/nginx/var/nginx/cache_4 /usr/share/nginx/var/nginx/cache_5
+sudo mkdir -p /var/nginx/cache_1 /var/nginx/cache_2 /var/nginx/cache_3 /var/nginx/cache_4 /var/nginx/cache_5
 sudo nginx -t
 sudo service nginx start
 sudo service mysql start || true
