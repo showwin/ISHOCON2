@@ -27,7 +27,6 @@ function make_tmp_file() {
 function run_ruby() {
   rbenv global 3.1.4
   unicorn -c unicorn_config.rb
-  echo "$check_message"
 }
 
 function run_python() {
