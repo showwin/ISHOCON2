@@ -288,3 +288,18 @@ mysql> EXPLAIN SELECT c.id, c.name, c.political_party, c.sex, v.count
 |  2 | DERIVED     | votes      | NULL       | index | idx_votes_candidate_id | idx_votes_candidate_id | 4       | NULL          | 12863 |   100.00 | NULL                            |
 +----+-------------+------------+------------+-------+------------------------+------------------------+---------+---------------+-------+----------+---------------------------------+
 ```
+
+- add foreign key to votes to candidates 28840
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 04:26:26 Start GET /initialize
+2024/01/02 04:26:26 期日前投票を開始します
+2024/01/02 04:26:27 期日前投票が終了しました
+2024/01/02 04:26:27 投票を開始します  Workload: 6
+2024/01/02 04:27:13 投票が終了しました
+2024/01/02 04:27:13 投票者が結果を確認しています
+2024/01/02 04:27:28 投票者の感心がなくなりました
+2024/01/02 04:27:28 {"score": 28840, "success": 26120, "failure": 0}
+```

@@ -96,6 +96,7 @@ SQL
       db.query('DELETE FROM votes')
       db.query('ALTER TABLE votes ADD INDEX idx_votes_candidate_id (candidate_id)')
       db.query('ALTER TABLE votes ADD COLUMN count int(4) NOT NULL')
+      db.query('ALTER TABLE votes ADD CONSTRAINT fk_votes_to_candidate FOREIGN KEY (candidate_id) REFERENCES candidates (id)')
     end
   end
 
