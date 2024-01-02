@@ -13,7 +13,7 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
-      start_period: 10s
+      start_period: 30s
     command: [/home/ishocon/run.sh]
     tty: true
     volumes:

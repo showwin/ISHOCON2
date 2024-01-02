@@ -23,6 +23,9 @@ RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build && \
     rbenv install 3.1.4 && rbenv rehash && rbenv global 3.1.4
 
+# YJIT の有効化
+ENV RUBY_YJIT_ENABLE=1
+
 # アプリケーション
 RUN mkdir /home/ishocon/data /home/ishocon/webapp
 COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
