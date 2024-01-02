@@ -8,17 +8,22 @@ then
   exit 1
 fi
 
+check_message="start application w/ ${app_lang}..."
+
+source /home/ishocon/.bashrc
+
 echo "app_lang: $app_lang"
 
 function make_tmp_file() {
   touch /tmp/ishocon-app
+  echo "$check_message"
 }
 
 function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
+  sudo rm -rf /tmp/unicorn.pid
   make_tmp_file
-  # add sudo for .pid file is not created somehow because of permission denied
-  sudo unicorn -c unicorn_config.rb
+  unicorn -c unicorn_config.rb
 }
 
 function run_python() {
@@ -40,8 +45,8 @@ function run_php() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
   sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
+  sudo service nginx reload  
   make_tmp_file
-  sudo service nginx reload
   tail -f /dev/null
 }
 

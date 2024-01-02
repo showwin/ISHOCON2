@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 sudo service nginx start
-sudo service mysql start
+sudo service mysql start || true # なぜか失敗する(調査中)
 sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 sudo service mysql start  # 正しく起動
 sudo mysql -u root -pishocon -e 'CREATE DATABASE IF NOT EXISTS ishocon2;' && \
