@@ -43,6 +43,18 @@ class Ishocon2::WebApp < Sinatra::Base
       client
     end
 
+    def transaction(&block)
+      raise ArgumentError, "No block was given" unless block_given?
+      begin
+        db.query("BEGIN")
+        yield
+        db.query("COMMIT")
+      rescue => e
+        puts "============ error = #{e.message} ============"
+        db.query("ROLLBACK")
+      end
+    end
+
     def candidates
       @candidates ||= db.query('SELECT * FROM candidates').map do |row|
         {
@@ -59,7 +71,7 @@ class Ishocon2::WebApp < Sinatra::Base
 SELECT c.id, c.name, c.political_party, c.sex, v.count
 FROM candidates AS c
 LEFT OUTER JOIN
-  (SELECT candidate_id, COUNT(*) AS count
+  (SELECT candidate_id, IFNULL(SUM(count), 0) AS count
   FROM votes
   GROUP BY candidate_id) AS v
 ON c.id = v.candidate_id
@@ -74,7 +86,7 @@ SELECT keyword
 FROM votes
 WHERE candidate_id IN (?)
 GROUP BY keyword
-ORDER BY COUNT(*) DESC
+ORDER BY IFNULL(SUM(count), 0) DESC
 LIMIT 10
 SQL
       db.xquery(query, candidate_ids).map { |a| a[:keyword] }
@@ -83,6 +95,7 @@ SQL
     def db_initialize
       db.query('DELETE FROM votes')
       db.query('ALTER TABLE votes ADD INDEX idx_votes_candidate_id (candidate_id)')
+      db.query('ALTER TABLE votes ADD COLUMN count int(4) NOT NULL')
     end
   end
 
@@ -93,12 +106,12 @@ SQL
       cs.push(r) if i < 10 || 28 < i
     end
 
-    parties_set = cs.map { |c| c[:political_party] }.uniq
+    # parties_set = cs.map { |c| c[:political_party] }.uniq
     # parties_set = db.query('SELECT political_party FROM candidates GROUP BY political_party')
-    parties = {}
-    parties_set.each do |party|
-      parties[party] = 0
-    end
+    parties = Hash.new(0)
+    # parties_set.each do |party|
+    #   parties[party] = 0
+    # end
     election_results.each do |r|
       parties[r[:political_party]] += r[:count] || 0
     end
@@ -117,7 +130,7 @@ SQL
     # candidate = db.xquery('SELECT * FROM candidates WHERE id = ?', params[:id]).first
     candidate = candidates.find { |c| c[:id] == params[:id] }
     return redirect '/' if candidate.nil?
-    votes = db.xquery('SELECT COUNT(*) AS count FROM votes WHERE candidate_id = ?', params[:id]).first[:count]
+    votes = db.xquery('SELECT IFNULL(SUM(count), 0) AS count FROM votes WHERE candidate_id = ?', params[:id]).first[:count]
     keywords = voice_of_supporter([params[:id]])
     erb :candidate, locals: { candidate: candidate,
                               votes: votes,
@@ -152,7 +165,11 @@ SQL
     # candidate = db.xquery('SELECT * FROM candidates WHERE name = ?', params[:candidate]).first
     candidate = candidates.find { |c| c[:name] == params[:candidate] }
     voted_count =
-      user.nil? ? 0 : db.xquery('SELECT COUNT(*) AS count FROM votes WHERE user_id = ?', user[:id]).first[:count]
+      user.nil? ? 0 : db.xquery('SELECT IFNULL(SUM(count), 0) AS count FROM votes WHERE user_id = ?', user[:id]).first[:count]
+
+    if voted_count.nil?
+      voted_count = 0
+    end
 
     # candidates = db.query('SELECT * FROM candidates')
     cs = candidates
@@ -168,12 +185,19 @@ SQL
       return erb :vote, locals: { candidates: cs, message: '投票理由を記入してください' }
     end
 
-    params[:vote_count].to_i.times do
-      result = db.xquery('INSERT INTO votes (user_id, candidate_id, keyword) VALUES (?, ?, ?)',
-                user[:id],
-                candidate[:id],
-                params[:keyword])
-    end
+    insert_query = 'INSERT INTO votes (user_id, candidate_id, keyword, count) VALUES (?, ?, ?, ?)'
+    result = db.xquery(insert_query, user[:id], candidate[:id], params[:keyword], params[:vote_count].to_i)
+
+    # transaction do
+    #   values = params[:vote_count].to_i.times.map { "(#{user_id}, #{candidate_id}, '#{keyword}')" }.join(', ')
+    #   query = [insert_query, values].join("\n")
+    # end
+    # params[:vote_count].to_i.times do
+    #   result = db.xquery('INSERT INTO votes (user_id, candidate_id, keyword) VALUES (?, ?, ?)',
+    #             user[:id],
+    #             candidate[:id],
+    #             params[:keyword])
+    # end
     return erb :vote, locals: { candidates: cs, message: '投票に成功しました' }
   end
 

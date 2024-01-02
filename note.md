@@ -239,3 +239,52 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
 2024/01/02 02:41:06 投票者の感心がなくなりました
 2024/01/02 02:41:06 {"score": 21250, "success": 19650, "failure": 0}
 ```
+
+- votes を bulk insert 20114
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 03:49:19 Start GET /initialize
+2024/01/02 03:49:19 期日前投票を開始します
+2024/01/02 03:49:20 期日前投票が終了しました
+2024/01/02 03:49:20 投票を開始します  Workload: 6
+2024/01/02 03:50:05 投票が終了しました
+2024/01/02 03:50:05 投票者が結果を確認しています
+2024/01/02 03:50:22 投票者の感心がなくなりました
+2024/01/02 03:50:22 {"score": 20114, "success": 19682, "failure": 0}
+```
+
+- votes に count column を追加して、投票数を保存 27926
+
+```
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 04:19:42 Start GET /initialize
+2024/01/02 04:19:42 期日前投票を開始します
+2024/01/02 04:19:43 期日前投票が終了しました
+2024/01/02 04:19:43 投票を開始します  Workload: 6
+2024/01/02 04:20:29 投票が終了しました
+2024/01/02 04:20:29 投票者が結果を確認しています
+2024/01/02 04:20:44 投票者の感心がなくなりました
+2024/01/02 04:20:44 {"score": 27926, "success": 25238, "failure": 0}
+```
+
+- 遅そうなクエリの explain
+
+```
+mysql> EXPLAIN SELECT c.id, c.name, c.political_party, c.sex, v.count
+    -> FROM candidates AS c
+    -> LEFT OUTER JOIN
+    ->   (SELECT candidate_id, IFNULL(SUM(count), 0) AS count
+    ->   FROM votes
+    ->   GROUP BY candidate_id) AS v
+    -> ON c.id = v.candidate_id
+    -> ORDER BY v.count DESC;
++----+-------------+------------+------------+-------+------------------------+------------------------+---------+---------------+-------+----------+---------------------------------+
+| id | select_type | table      | partitions | type  | possible_keys          | key                    | key_len | ref           | rows  | filtered | Extra                           |
++----+-------------+------------+------------+-------+------------------------+------------------------+---------+---------------+-------+----------+---------------------------------+
+|  1 | PRIMARY     | c          | NULL       | ALL   | NULL                   | NULL                   | NULL    | NULL          |    30 |   100.00 | Using temporary; Using filesort |
+|  1 | PRIMARY     | <derived2> | NULL       | ref   | <auto_key0>            | <auto_key0>            | 4       | ishocon2.c.id |   128 |   100.00 | NULL                            |
+|  2 | DERIVED     | votes      | NULL       | index | idx_votes_candidate_id | idx_votes_candidate_id | 4       | NULL          | 12863 |   100.00 | NULL                            |
++----+-------------+------------+------------+-------+------------------------+------------------------+---------+---------------+-------+----------+---------------------------------+
+```
