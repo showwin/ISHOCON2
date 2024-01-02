@@ -82,6 +82,7 @@ SQL
 
     def db_initialize
       db.query('DELETE FROM votes')
+      db.query('ALTER TABLE votes ADD INDEX idx_votes_candidate_id (candidate_id)')
     end
   end
 

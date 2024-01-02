@@ -164,3 +164,20 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 4"
 
 ~/ghq/github.com/mickamy/ISHOCON2 imp1* 1m 30s
 ```
+
+- ALTER TABLE votes ADD INDEX idx_votes_candidate_id (candidate_id); 
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 4"
+2024/01/02 01:49:33 Start GET /initialize
+2024/01/02 01:49:33 期日前投票を開始します
+2024/01/02 01:49:34 期日前投票が終了しました
+2024/01/02 01:49:34 投票を開始します  Workload: 4
+2024/01/02 01:50:20 投票が終了しました
+2024/01/02 01:50:20 投票者が結果を確認しています
+2024/01/02 01:50:35 投票者の感心がなくなりました
+2024/01/02 01:50:35 {"score": 19292, "success": 16996, "failure": 0}
+
+~/ghq/github.com/mickamy/ISHOCON2 imp1* 1m 2s
+```
