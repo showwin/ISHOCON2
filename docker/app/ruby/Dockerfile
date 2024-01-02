@@ -32,6 +32,12 @@ COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
 COPY webapp/ /home/ishocon/webapp
 COPY admin/config/bashrc /home/ishocon/.bashrc
 
+# 静的ファイルの配置（nginx が読めるように）
+COPY --chown=www-data:www-data public /home/ishocon/public
+
+# base をビルドし直しても変更されなかったのでここでも改めてコピーする
+COPY admin/config/nginx.conf /etc/nginx/nginx.conf
+
 # ライブラリのインストール
 RUN cd /home/ishocon/webapp/ruby && \
     . /home/ishocon/.bashrc && \
