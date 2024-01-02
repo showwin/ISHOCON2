@@ -393,3 +393,18 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
 2024/01/02 06:42:26 投票者の感心がなくなりました
 2024/01/02 06:42:26 {"score": 31606, "success": 26078, "failure": 0}
 ```
+
+- keyword をテーブルにする 28084
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 07:23:59 Start GET /initialize
+2024/01/02 07:23:59 期日前投票を開始します
+2024/01/02 07:24:00 期日前投票が終了しました
+2024/01/02 07:24:00 投票を開始します  Workload: 6
+2024/01/02 07:24:46 投票が終了しました
+2024/01/02 07:24:46 投票者が結果を確認しています
+2024/01/02 07:25:23 投票者の感心がなくなりました
+2024/01/02 07:25:23 {"score": 28084, "success": 23692, "failure": 0}
+```

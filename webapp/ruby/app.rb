@@ -49,7 +49,8 @@ class Ishocon2::WebApp < Sinatra::Base
         yield
         db.query("COMMIT")
       rescue => e
-        puts e.backtrace.&join("\n")
+        puts e.message
+        puts e.backtrace || 'no backtrace'
         db.query("ROLLBACK")
       end
     end
@@ -81,10 +82,11 @@ SQL
 
     def voice_of_supporter(candidate_ids)
       query = <<SQL
-SELECT keyword
-FROM votes
-WHERE candidate_id IN (?)
-GROUP BY keyword
+SELECT content as keyword
+FROM candidate_keywords k
+JOIN votes v on k.candidate_id = v.candidate_id
+WHERE k.candidate_id IN (?)
+GROUP BY k.content
 ORDER BY IFNULL(SUM(count), 0) DESC
 LIMIT 10
 SQL
@@ -93,10 +95,14 @@ SQL
 
     def db_initialize
       db.query('DELETE FROM votes')
+      db.query('CREATE TABLE IF NOT EXISTS candidate_keywords (id int(11) NOT NULL AUTO_INCREMENT, candidate_id int(11) NOT NULL, content text NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4')
+      db.query('ALTER TABLE candidate_keywords ADD CONSTRAINT fk_keyword_to_candidate FOREIGN KEY (candidate_id) REFERENCES candidates (id)')
+      db.query('DELETE FROM candidate_keywords')
       db.query('ALTER TABLE votes ADD INDEX idx_votes_candidate_id (candidate_id)')
       db.query('ALTER TABLE votes ADD COLUMN count int(4) NOT NULL')
       db.query('ALTER TABLE votes ADD CONSTRAINT fk_votes_to_candidate FOREIGN KEY (candidate_id) REFERENCES candidates (id)')
       db.query('ALTER TABLE votes ADD INDEX idx_votes_candidate_and_count (candidate_id, count)')
+      db.query('ALTER TABLE votes DROP COLUMN keyword')
     end
   end
 
@@ -187,8 +193,12 @@ SQL
       return erb :vote, locals: { candidates: cs, message: '投票理由を記入してください' }
     end
 
-    insert_query = 'INSERT INTO votes (user_id, candidate_id, keyword, count) VALUES (?, ?, ?, ?)'
-    result = db.xquery(insert_query, user[:id], candidate[:id], params[:keyword], params[:vote_count].to_i)
+    transaction do
+      insert_vote_query = 'INSERT INTO votes (user_id, candidate_id, count) VALUES (?, ?, ?)'
+      db.xquery(insert_vote_query, user[:id], candidate[:id], params[:vote_count].to_i)
+      insert_keyword_query = 'INSERT INTO candidate_keywords (candidate_id, content) VALUES (?, ?)'
+      db.xquery(insert_keyword_query, candidate[:id], params[:keyword])
+    end
 
     # transaction do
     #   values = params[:vote_count].to_i.times.map { "(#{user_id}, #{candidate_id}, '#{keyword}')" }.join(', ')
