@@ -43,16 +43,16 @@ class Ishocon2::WebApp < Sinatra::Base
       client
     end
 
-    # def candidates
-    #   @candidates ||= db.query('SELECT * FROM candidates').map do |row|
-    #     {
-    #       id: row[:id],
-    #       name: row[:name],
-    #       political_party: row[:political_party],
-    #       sex: row[:sex],
-    #     }
-    #   end
-    # end
+    def candidates
+      @candidates ||= db.query('SELECT * FROM candidates').map do |row|
+        {
+          id: row[:id],
+          name: row[:name],
+          political_party: row[:political_party],
+          sex: row[:sex],
+        }
+      end
+    end
 
     def election_results
       query = <<SQL
@@ -93,10 +93,12 @@ SQL
       cs.push(r) if i < 10 || 28 < i
     end
 
-    # parties_set = cs.map { |c| c[:political_party] }.uniq
-    parties_set = db.query('SELECT political_party FROM candidates GROUP BY political_party')
+    parties_set = cs.map { |c| c[:political_party] }.uniq
+    # parties_set = db.query('SELECT political_party FROM candidates GROUP BY political_party')
     parties = {}
-    parties_set.each { |a| parties[a[:political_party]] = 0 }
+    parties_set.each do |party|
+      parties[party] = 0
+    end
     election_results.each do |r|
       parties[r[:political_party]] += r[:count] || 0
     end
@@ -112,8 +114,8 @@ SQL
   end
 
   get '/candidates/:id' do
-    candidate = db.xquery('SELECT * FROM candidates WHERE id = ?', params[:id]).first
-    # candidate = candidates.first { |c| c[:id] == param[:id] }
+    # candidate = db.xquery('SELECT * FROM candidates WHERE id = ?', params[:id]).first
+    candidate = candidates.find { |c| c[:id] == params[:id] }
     return redirect '/' if candidate.nil?
     votes = db.xquery('SELECT COUNT(*) AS count FROM votes WHERE candidate_id = ?', params[:id]).first[:count]
     keywords = voice_of_supporter([params[:id]])
@@ -127,17 +129,18 @@ SQL
     election_results.each do |r|
       votes += r[:count] || 0 if r[:political_party] == params[:name]
     end
-    candidates = db.xquery('SELECT * FROM candidates WHERE political_party = ?', params[:name])
-    candidate_ids = candidates.map { |c| c[:id] }
+    # candidates = db.xquery('SELECT * FROM candidates WHERE political_party = ?', params[:name])
+    cs = candidates.select { |c| c[:political_party] == params[:name] }
+    candidate_ids = cs.map { |c| c[:id] }
     keywords = voice_of_supporter(candidate_ids)
     erb :political_party, locals: { political_party: params[:name],
                                     votes: votes,
-                                    candidates: candidates,
+                                    candidates: cs,
                                     keywords: keywords }
   end
 
   get '/vote' do
-    candidates = db.query('SELECT * FROM candidates')
+    # candidates = db.query('SELECT * FROM candidates')
     erb :vote, locals: { candidates: candidates, message: '' }
   end
 
@@ -146,12 +149,12 @@ SQL
                      params[:name],
                      params[:address],
                      params[:mynumber]).first
-    candidate = db.xquery('SELECT * FROM candidates WHERE name = ?', params[:candidate]).first
-    # candidate = candidates.first { |c| c[:name] == params[:candidate] }
+    # candidate = db.xquery('SELECT * FROM candidates WHERE name = ?', params[:candidate]).first
+    candidate = candidates.find { |c| c[:name] == params[:candidate] }
     voted_count =
       user.nil? ? 0 : db.xquery('SELECT COUNT(*) AS count FROM votes WHERE user_id = ?', user[:id]).first[:count]
 
-    candidates = db.query('SELECT * FROM candidates')
+    # candidates = db.query('SELECT * FROM candidates')
     cs = candidates
     if user.nil?
       return erb :vote, locals: { candidates: cs, message: '個人情報に誤りがあります' }
