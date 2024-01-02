@@ -13,14 +13,15 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
-      start_period: 10s
+      start_period: 30s
     command: [/home/ishocon/run.sh]
     tty: true
     volumes:
-      - storage_app:/var/lib/mysql
+      # - storage_app:/var/lib/mysql
       - ./webapp:/home/ishocon/webapp
     ports:
       - "443:443"
+      - "3306:3306"
 
   bench:
     image: showwin/ishocon2_bench:latest
