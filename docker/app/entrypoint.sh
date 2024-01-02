@@ -1,5 +1,7 @@
 #!/bin/bash -eux
 
+sudo mkdir -p /var/nginx/cache_1 /var/nginx/cache_2
+sudo nginx -t
 sudo service nginx start
 sudo service mysql start || true
 sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld

@@ -437,3 +437,34 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
 2024/01/02 07:54:03 投票者の感心がなくなりました
 2024/01/02 07:54:03 {"score": 30742, "success": 26046, "failure": 0}
 ```
+
+- cache at nginx level 19152
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 08:43:20 Start GET /initialize
+2024/01/02 08:43:21 期日前投票を開始します
+2024/01/02 08:43:36 期日前投票が終了しました
+2024/01/02 08:43:36 投票を開始します  Workload: 6
+2024/01/02 08:44:22 投票が終了しました
+2024/01/02 08:44:22 投票者が結果を確認しています
+2024/01/02 08:44:47 投票者の感心がなくなりました
+2024/01/02 08:44:47 {"score": 19152, "success": 16176, "failure": 0}
+```
+
+- increase nginx worker process 20122
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 08:50:34 Start GET /initialize
+2024/01/02 08:50:34 期日前投票を開始します
+2024/01/02 08:50:36 期日前投票が終了しました
+2024/01/02 08:50:36 投票を開始します  Workload: 6
+2024/01/02 08:51:21 投票が終了しました
+2024/01/02 08:51:21 投票者が結果を確認しています
+2024/01/02 08:51:43 投票者の感心がなくなりました
+2024/01/02 08:51:43 {"score": 20122, "success": 17186, "failure": 0}
+```
+
