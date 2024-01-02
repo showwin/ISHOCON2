@@ -14,18 +14,16 @@ source /home/ishocon/.bashrc
 
 echo "app_lang: $app_lang"
 
-function run_ruby() {
-  rbenv global 3.1.4
-  rm -rf /home/ishocon/webapp/ruby/unicorn.pid
-  unicorn -c unicorn_config.rb
-  echo "app_lang: $app_lang"
-
 function make_tmp_file() {
   touch /tmp/ishocon-app
+  echo "$check_message"
 }
 
 function run_ruby() {
+  cd "/home/ishocon/webapp/$app_lang"
   rbenv global 3.1.4
+  rm -rf /tmp/unicorn.pid
+  make_tmp_file
   unicorn -c unicorn_config.rb
 }
 
