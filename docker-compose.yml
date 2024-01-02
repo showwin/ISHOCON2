@@ -14,6 +14,7 @@ services:
       - ./webapp:/home/ishocon/webapp
     ports:
       - "443:443"
+      - "3306:3306"
 
   bench:
     image: showwin/ishocon2_bench:latest

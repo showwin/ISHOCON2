@@ -32,3 +32,5 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias grep='grep --color=auto'
+
+export ISHOCON_APP_LANG=ruby

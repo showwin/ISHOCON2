@@ -99,3 +99,34 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443"
 
 ~/ghq/github.com/mickamy/ISHOCON2 imp1* 1m 2s
 ```
+
+- unicorn のワーカ増やした
+- candidates をメモリに載せようとしたら壊れたので戻した
+  - 元々30件だからたいしたことないか？
+  - TODO: 余裕できたら再チャレンジ
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443"
+2024/01/02 01:19:04 Start GET /initialize
+2024/01/02 01:19:05 期日前投票を開始します
+2024/01/02 01:19:13 エラーメッセージに誤りがあります at POST /vote
+make: *** [bench] Error 1
+
+~/ghq/github.com/mickamy/ISHOCON2 imp1* 9s
+```
+
+- unicorn のプロセスのおかげでスコアだけ上がった
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443"
+2024/01/02 01:33:23 Start GET /initialize
+2024/01/02 01:33:23 期日前投票を開始します
+2024/01/02 01:33:24 期日前投票が終了しました
+2024/01/02 01:33:24 投票を開始します  Workload: 3
+2024/01/02 01:34:09 投票が終了しました
+2024/01/02 01:34:09 投票者が結果を確認しています
+2024/01/02 01:34:25 投票者の感心がなくなりました
+2024/01/02 01:34:25 {"score": 17144, "success": 16072, "failure": 0}
+```

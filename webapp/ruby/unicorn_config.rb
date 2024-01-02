@@ -1,4 +1,4 @@
-worker_processes 2
+worker_processes 8
 preload_app true
-pid './unicorn.pid'
+pid '/tmp/unicorn.pid'
 listen 8080

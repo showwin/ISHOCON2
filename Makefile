@@ -4,7 +4,7 @@ common:
 build: common
 	docker compose build --progress=plain
 
-up: build
+up:
 	docker compose up -d
 
 down: 
