@@ -1,7 +1,6 @@
 version: '3.0'
 services:
   app:
-    image: mickamy/ishocon2-app:latest
     build: 
       context: .
       dockerfile: ./docker/app/ruby/Dockerfile
