@@ -181,3 +181,17 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 4"
 
 ~/ghq/github.com/mickamy/ISHOCON2 imp1* 1m 2s
 ```
+
+- unicorn: 24 多分意味ない
+
+```
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 4"
+2024/01/02 01:52:15 Start GET /initialize
+2024/01/02 01:52:15 期日前投票を開始します
+2024/01/02 01:52:15 期日前投票が終了しました
+2024/01/02 01:52:15 投票を開始します  Workload: 4
+2024/01/02 01:53:02 投票が終了しました
+2024/01/02 01:53:02 投票者が結果を確認しています
+2024/01/02 01:53:17 投票者の感心がなくなりました
+2024/01/02 01:53:17 {"score": 19568, "success": 17384, "failure": 0}
+```
