@@ -7,7 +7,7 @@ ENV TZ Asia/Tokyo
 RUN sudo apt-get update
 
 # 日本語の設定
-RUN sudo apt-get install -y language-pack-ja && \
+RUN sudo apt-get install -y language-pack-ja htop && \
     sudo update-locale LANG=ja_JP.UTF-8 && \
     sudo rm -rf /var/lib/apt/lists/*
 ENV LANG="ja_JP.UTF-8" \
