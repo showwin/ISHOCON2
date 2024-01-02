@@ -43,10 +43,6 @@ class Ishocon2::WebApp < Sinatra::Base
       client
     end
 
-    def candidates
-      @candidates ||= db.query('SELECT * FROM candidates')
-    end
-
     def election_results
       query = <<SQL
 SELECT c.id, c.name, c.political_party, c.sex, v.count
@@ -103,7 +99,7 @@ SQL
   end
 
   get '/candidates/:id' do
-    candaite = candidates.first { |c| c[:id] == params[:id].to_i }
+    candidate = db.xquery('SELECT * FROM candidates WHERE id = ?', params[:id]).first
     return redirect '/' if candidate.nil?
     votes = db.xquery('SELECT COUNT(*) AS count FROM votes WHERE candidate_id = ?', params[:id]).first[:count]
     keywords = voice_of_supporter([params[:id]])
@@ -117,8 +113,8 @@ SQL
     election_results.each do |r|
       votes += r[:count] || 0 if r[:political_party] == params[:name]
     end
-    cs = candidates.first { |c| c[:political_party] == params[:name] }
-    candidate_ids = cs.map { |c| c[:id] }
+    candidates = db.xquery('SELECT * FROM candidates WHERE political_party = ?', params[:name])
+    candidate_ids = candidates.map { |c| c[:id] }
     keywords = voice_of_supporter(candidate_ids)
     erb :political_party, locals: { political_party: params[:name],
                                     votes: votes,
@@ -127,6 +123,7 @@ SQL
   end
 
   get '/vote' do
+    candidates = db.query('SELECT * FROM candidates')
     erb :vote, locals: { candidates: candidates, message: '' }
   end
 
@@ -135,10 +132,11 @@ SQL
                      params[:name],
                      params[:address],
                      params[:mynumber]).first
-    candidate = candidates.first { |c| c[:name] == params[:candidate] }
+    candidate = db.xquery('SELECT * FROM candidates WHERE name = ?', params[:candidate]).first
     voted_count =
       user.nil? ? 0 : db.xquery('SELECT COUNT(*) AS count FROM votes WHERE user_id = ?', user[:id]).first[:count]
 
+    candidates = db.query('SELECT * FROM candidates')
     if user.nil?
       return erb :vote, locals: { candidates: candidates, message: '個人情報に誤りがあります' }
     elsif user[:votes] < (params[:vote_count].to_i + voted_count)
