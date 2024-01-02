@@ -21,7 +21,6 @@ function make_tmp_file() {
 
 function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
-  rbenv global 3.1.4
   sudo rm -rf /tmp/unicorn.pid
   make_tmp_file
   unicorn -c unicorn_config.rb

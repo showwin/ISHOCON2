@@ -49,7 +49,7 @@ class Ishocon2::WebApp < Sinatra::Base
         yield
         db.query("COMMIT")
       rescue => e
-        puts "============ error = #{e.message} ============"
+        puts e.backtrace.&join("\n")
         db.query("ROLLBACK")
       end
     end
