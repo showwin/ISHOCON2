@@ -303,3 +303,18 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
 2024/01/02 04:27:28 投票者の感心がなくなりました
 2024/01/02 04:27:28 {"score": 28840, "success": 26120, "failure": 0}
 ```
+
+- election_results の複数回コールを止める 33168
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/02 04:29:00 Start GET /initialize
+2024/01/02 04:29:01 期日前投票を開始します
+2024/01/02 04:29:02 期日前投票が終了しました
+2024/01/02 04:29:02 投票を開始します  Workload: 6
+2024/01/02 04:29:47 投票が終了しました
+2024/01/02 04:29:47 投票者が結果を確認しています
+2024/01/02 04:30:02 投票者の感心がなくなりました
+2024/01/02 04:30:02 {"score": 33168, "success": 28584, "failure": 0}
+```

@@ -102,7 +102,8 @@ SQL
 
   get '/' do
     cs = []
-    election_results.each_with_index do |r, i|
+    er = election_results
+    er.each_with_index do |r, i|
       # 上位10人と最下位のみ表示
       cs.push(r) if i < 10 || 28 < i
     end
@@ -113,12 +114,12 @@ SQL
     # parties_set.each do |party|
     #   parties[party] = 0
     # end
-    election_results.each do |r|
+    er.each do |r|
       parties[r[:political_party]] += r[:count] || 0
     end
 
     sex_ratio = { '男': 0, '女': 0 }
-    election_results.each do |r|
+    er.each do |r|
       sex_ratio[r[:sex].to_sym] += r[:count] || 0
     end
 
