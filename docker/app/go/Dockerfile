@@ -1,5 +1,5 @@
-FROM showwin/ishocon2_app_base:latest
-ENV APP_LANG 'Go'
+ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
+FROM ${BASE_IMAGE}
 
 # Go のインストール
 RUN sudo apt-get update
@@ -15,7 +15,6 @@ ENV PATH $PATH:$GOROOT/bin
 RUN mkdir /home/ishocon/data /home/ishocon/webapp
 COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
 COPY webapp/ /home/ishocon/webapp
-COPY admin/config/bashrc /home/ishocon/.bashrc
 
 WORKDIR /home/ishocon
 EXPOSE 443

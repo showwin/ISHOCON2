@@ -1,5 +1,5 @@
-FROM showwin/ishocon2_app_base:latest
-ENV APP_LANG 'Python'
+ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
+FROM ${BASE_IMAGE}
 
 # Python のインストール
 RUN sudo apt-get update
@@ -14,7 +14,6 @@ RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
 RUN mkdir /home/ishocon/data /home/ishocon/webapp
 COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
 COPY webapp/ /home/ishocon/webapp
-COPY admin/config/bashrc /home/ishocon/.bashrc
 
 # ライブラリのインストール
 RUN sudo apt-get install -y libmysqlclient-dev

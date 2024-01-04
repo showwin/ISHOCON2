@@ -1,5 +1,5 @@
-FROM showwin/ishocon2_app_base:latest
-ENV APP_LANG 'Node.js'
+ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
+FROM ${BASE_IMAGE}
 
 # NodeJS のインストール
 RUN sudo apt-get update
@@ -10,7 +10,6 @@ RUN sudo apt install -y nodejs npm
 RUN mkdir /home/ishocon/data /home/ishocon/webapp
 COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
 COPY webapp/ /home/ishocon/webapp
-COPY admin/config/bashrc /home/ishocon/.bashrc
 
 # ライブラリのインストール
 RUN cd /home/ishocon/webapp/nodejs && \

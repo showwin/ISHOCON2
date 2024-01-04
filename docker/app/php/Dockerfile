@@ -1,5 +1,5 @@
-FROM showwin/ishocon2_app_base:latest
-ENV APP_LANG 'PHP'
+ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
+FROM ${BASE_IMAGE}
 
 # PHP のインストール
 RUN sudo mkdir /run/php
@@ -10,7 +10,6 @@ RUN sudo apt install -y php php-fpm php-mysql php-cli
 RUN mkdir /home/ishocon/data /home/ishocon/webapp
 COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
 COPY webapp/ /home/ishocon/webapp
-COPY admin/config/bashrc /home/ishocon/.bashrc
 
 # ライブラリのインストール
 RUN cd /home/ishocon/webapp/php && \

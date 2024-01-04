@@ -23,6 +23,9 @@ RUN groupadd -g 1001 ishocon && \
     echo 'ishocon:ishocon' | chpasswd
 RUN echo 'ishocon ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+# *env 系の設定が入った .bashrc のコピー
+COPY admin/config/bashrc /home/ishocon/.bashrc
+
 # Nginx の設定
 COPY admin/ssl/ /etc/nginx/ssl/
 COPY admin/config/nginx.conf /etc/nginx/nginx.conf

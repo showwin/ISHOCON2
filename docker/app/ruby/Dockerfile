@@ -1,4 +1,6 @@
-FROM showwin/ishocon2_app_base:latest
+ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
+FROM ${BASE_IMAGE}
+
 ENV APP_LANG 'Ruby'
 
 # Ruby のインストール
@@ -14,7 +16,6 @@ RUN PATH="$HOME/.rbenv/bin:$PATH" && \
 RUN mkdir /home/ishocon/data /home/ishocon/webapp
 COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
 COPY webapp/ /home/ishocon/webapp
-COPY admin/config/bashrc /home/ishocon/.bashrc
 
 # ライブラリのインストール
 RUN cd /home/ishocon/webapp/ruby && sudo gem install bundler -v "1.16.1" && bundle install
