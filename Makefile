@@ -1,5 +1,8 @@
 WORKLOAD = 3
-UNAME = $(shell whoami)
+ifeq ($(UNAME),)
+	UNAME = $(shell whoami)
+endif
+
 ARCH = $(shell uname -m)
 
 UBUNTU_VERSION = 18.04

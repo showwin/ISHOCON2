@@ -25,31 +25,39 @@ jobs:
           - "ruby"
     env:
       ISHOCON_APP_LANG: ${{ matrix.language }}
+      UNAME: ${{ github.actor }}
     steps:
       - uses: actions/checkout@v4
       - run: make change-lang LANG=$ISHOCON_APP_LANG
+      - run: |
+          sed -i 's/ishocon2-app-base/'"${{ env.UNAME }}"'\/ishocon2-app-base/g' ./docker-compose.yml;
+          sed -i 's/ishocon2-bench/'"${{ env.UNAME }}"'\/ishocon2-app-bench/g' ./docker-compose.yml;
+          cat ./docker-compose.yml;
       - uses: docker/setup-buildx-action@v3
       - uses: docker/build-push-action@v5.1.0
         with:
-            context: .
-            file: ./docker/app/base/Dockerfile
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
-            tags: ishocon2-app-base:latest
+          context: .
+          file: ./docker/app/base/Dockerfile
+          cache-from: type=gha
+          cache-to: type=local,mode=max,dest=.cache/base
+          load: true
+          tags: ${{ env.UNAME }}/ishocon2-app-base:latest
       - uses: docker/build-push-action@v5.1.0
         with:
           context: .
           file: ./docker/benchmarker/Dockerfile
           cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: ishocon2-app-bench:latest
+          cache-to: type=local,mode=max,dest=.cache/bench
+          load: true
+          tags: ${{ env.UNAME }}/ishocon2-app-bench:latest
       - uses: docker/build-push-action@v5.1.0
         with:
           context: .
           file: ./docker/app/${{ env.ISHOCON_APP_LANG }}/Dockerfile
-          cache-from: type=gha
+          cache-from: type=local,src=.cache/base
           cache-to: type=gha,mode=max
-          tags: ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
+          load: true
+          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
       - run: make build
         timeout-minutes: 5
       - run: make up bench-with-db-init
