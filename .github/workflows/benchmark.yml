@@ -36,6 +36,13 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: ${{ github.actor }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
+      - uses: docker/build-push-action@v5.1.0
+        with:
+            context: .
+            file: ./docker/benchmarker/Dockerfile
+            cache-from: type=gha
+            cache-to: type=gha,mode=max
+            tags: ${{ github.actor }}/ishocon2-app-bench:latest
       - run: make build
         timeout-minutes: 5
       - run: make up bench-with-db-init

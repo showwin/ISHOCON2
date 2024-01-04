@@ -1,9 +1,21 @@
-FROM ubuntu:18.04
+ARG BASE_IMAGE=ubuntu:18.04
+FROM ${BASE_IMAGE}
 
 ENV LANG en_US.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV TZ Asia/Tokyo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get update
-RUN apt-get install -y wget sudo less vim tzdata
+# MySQL のインストール
+RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-server mysql-server/root_password password ishocon'"]
+RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-service mysql-server/mysql-apt-config string 4'"]
+
+RUN apt-get update && \
+    apt-get install -y wget sudo less vim tzdata \
+    mysql-server \
+    nginx \
+    # 各言語のインストールに必要なもの下準備 \
+    curl git gcc make libssl-dev libreadline-dev
 
 # ishocon ユーザ作成
 RUN groupadd -g 1001 ishocon && \
@@ -11,17 +23,10 @@ RUN groupadd -g 1001 ishocon && \
     echo 'ishocon:ishocon' | chpasswd
 RUN echo 'ishocon ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# MySQL のインストール
-RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-server mysql-server/root_password password ishocon'"]
-RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-service mysql-server/mysql-apt-config string 4'"]
-RUN apt-get install -y mysql-server
-
-# Nginx のインストール
-RUN apt-get install -y nginx
+# Nginx の設定
 COPY admin/ssl/ /etc/nginx/ssl/
 COPY admin/config/nginx.conf /etc/nginx/nginx.conf
 
-# 各言語のインストールに必要なもの下準備
-RUN apt-get install -y curl git gcc make libssl-dev libreadline-dev
-
 USER ishocon
+
+EXPOSE 3306 443

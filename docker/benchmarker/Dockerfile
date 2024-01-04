@@ -1,32 +1,36 @@
-FROM ubuntu:18.04
+ARG BASE_IMAGE=ubuntu:18.04
+FROM ${BASE_IMAGE}
 
-RUN sudo apt-get update
-RUN apt-get install -y wget
-
-# Go のインストール
-RUN wget -q https://dl.google.com/go/go1.13.15.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.13.15.linux-amd64.tar.gz
-ENV PATH $PATH:/usr/local/go/bin
-ENV GOROOT /usr/local/go
-ENV GOPATH $HOME/.local/go
-ENV PATH $PATH:$GOROOT/bin
+ENV LANG en_US.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV TZ Asia/Tokyo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # MySQL のインストール
 RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-server mysql-server/root_password password ishocon'"]
 RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-service mysql-server/mysql-apt-config string 4'"]
 
-RUN sudo apt-get update && \
-    apt-get install -y mysql-server
+RUN apt-get update && \
+    apt-get install -y wget mysql-server git tzdata
 
-COPY admin/ /root/admin/
+# Go のインストール
+ARG TARGETARCH
+RUN echo https://dl.google.com/go/go1.15.8.linux-${TARGETARCH}.tar.gz
+RUN wget -q https://dl.google.com/go/go1.15.8.linux-${TARGETARCH}.tar.gz && \
+    tar -C /usr/local -xzf go1.15.8.linux-${TARGETARCH}.tar.gz
+ENV PATH $PATH:/usr/local/go/bin
+ENV GOROOT /usr/local/go
+ENV GOPATH $HOME/.local/go
+ENV PATH $PATH:$GOROOT/bin
 
 # build benchmark
-RUN apt-get install -y git
-RUN cd /root/admin/benchmarker && go build -o benchmark *.go
-RUN cp /root/admin/benchmarker/benchmark /root/benchmark
+COPY admin/benchmarker /root/admin/benchmarker
+RUN cd /root/admin/benchmarker &&  \
+    GOARCH=${TARGETARCH} go build -x -o ../../benchmark *.go
 
 # MySQL 初期設定
-RUN cp /root/admin/config/my.cnf /etc/mysql/my.cnf
+COPY admin/ishocon2.dump.tar.bz2 /root/admin/ishocon2.dump.tar.bz2
+COPY admin/config/my.bench.cnf /etc/mysql/my.cnf
 
 WORKDIR /root
 
