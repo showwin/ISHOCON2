@@ -25,13 +25,48 @@ jobs:
           - "ruby"
     env:
       ISHOCON_APP_LANG: ${{ matrix.language }}
-      UNAME: ${{ github.actor }}
+      UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
     steps:
       - uses: actions/checkout@v4
-      - run: make change-lang LANG=$ISHOCON_APP_LANG
-      - run: |
+      - name: Replace base image in docker-compose.yml with github actor name
+        run: |
+          make change-lang
           sed -i 's/ishocon2-app-base/${{ env.UNAME }}\/ishocon2-app-base/g' ./docker-compose.yml
           cat ./docker-compose.yml
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.UNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Build and push bench image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          file: ./docker/benchmarker/Dockerfile
+          tags: ${{ env.UNAME }}/ishocon2-app-bench:latest
+          cache-from: type=registry,ref=${{ env.UNAME }}/ishocon2-app-bench:latest
+          cache-to: type=inline
+      - name: Build and push base image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          file: ./docker/app/base/Dockerfile
+          tags: ${{ env.UNAME }}/ishocon2-app-base:latest
+          cache-from: type=registry,ref=${{ env.UNAME }}/ishocon2-app-base:latest
+          cache-to: type=inline
+      - name: Build and push app image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
+          file: ./docker/app/${{ env.ISHOCON_APP_LANG }}/Dockerfile
+          cache-from: type=registry,ref=${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latestst
+          cache-to: type=inline
       - run: make build
         timeout-minutes: 5
       - run: make up bench-with-db-init
