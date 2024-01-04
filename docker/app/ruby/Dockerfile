@@ -8,7 +8,7 @@ RUN sudo apt-get update && \
 RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
     git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build && \
-    rbenv install 3.2.2 && rbenv rehash && rbenv global 3.2.2
+    rbenv install 2.5.1 && rbenv rehash && rbenv global 2.5.1
 
 # アプリケーション
 RUN mkdir /home/ishocon/data /home/ishocon/webapp
