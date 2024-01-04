@@ -25,7 +25,7 @@ build-bench:
 	-t ishocon2-bench:latest \
 	-t $(UNAME)/ishocon2-bench:latest .;
 
-build-app: build-base
+build-app: check-lang build-base
 	ISHOCON_APP_LANG=$(ISHOCON_APP_LANG:ruby)
 	docker build \
 	--build-arg BASE_IMAGE=$(LOCAL_ISHOCON_BASE_IMAGE) \
@@ -55,7 +55,7 @@ bench-with-db-init: up
 		&& ./benchmark --ip app:443 --workload ${WORKLOAD} \
 	";
 
-change-lang:
+check-lang:
 	if echo "$(ISHOCON_APP_LANG)" | grep -qE '^(ruby|python|go|php|nodejs|crystal)$$'; then \
         echo "ISHOCON_APP_LANG is valid."; \
     else \
@@ -63,6 +63,7 @@ change-lang:
         exit 1; \
     fi;
 
+change-lang: check-lang
 	if sed --version 2>&1 | grep -q GNU; then \
 		echo "GNU sed"; \
 		sed -i 's/\(ruby\|python\|go\|php\|nodejs\|crystal\)/'"$(ISHOCON_APP_LANG)"'/g' ./docker-compose.yml; \
