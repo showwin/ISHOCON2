@@ -2,7 +2,7 @@ WORKLOAD = 3
 UNAME = $(shell whoami)
 ARCH = $(shell uname -m)
 
-UBUNTU_VERSION = jammy-20231211.1
+UBUNTU_VERSION = 18.04
 ifeq ($(ARCH), arm64)
 	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
 else
@@ -36,10 +36,10 @@ build-app: check-lang build-base
 build: build-bench build-app
 	docker compose -f ./docker-compose.yml build;
 
-up: build
+up:
 	docker compose up -d;
 
-up-nod: build
+up-nod:
 	docker compose up;
 
 down:
