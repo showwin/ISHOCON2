@@ -15,9 +15,9 @@ RUN apt-get update && \
 
 # Go のインストール
 ARG TARGETARCH
-RUN echo https://dl.google.com/go/go1.15.8.linux-${TARGETARCH}.tar.gz
-RUN wget -q https://dl.google.com/go/go1.15.8.linux-${TARGETARCH}.tar.gz && \
-    tar -C /usr/local -xzf go1.15.8.linux-${TARGETARCH}.tar.gz
+RUN wget -q https://dl.google.com/go/go1.13.15.linux-${TARGETARCH}.tar.gz && \
+    tar -C /usr/local -xzf go1.13.15.linux-${TARGETARCH}.tar.gz && \
+    rm go1.13.15.linux-${TARGETARCH}.tar.gz
 ENV PATH $PATH:/usr/local/go/bin
 ENV GOROOT /usr/local/go
 ENV GOPATH $HOME/.local/go
