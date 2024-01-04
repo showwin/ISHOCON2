@@ -1,8 +1,6 @@
 ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
 FROM ${BASE_IMAGE}
 
-ENV APP_LANG 'Ruby'
-
 # Ruby のインストール
 RUN sudo apt-get update && \
     sudo apt-get install -y ruby-dev libmysqlclient-dev libffi6 libffi-dev libyaml-dev bzip2 && \
