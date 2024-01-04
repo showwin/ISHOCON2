@@ -12,12 +12,9 @@ ENV GOPATH /home/ishocon/.local/go
 ENV PATH $PATH:$GOROOT/bin
 
 # アプリケーション
-RUN mkdir /home/ishocon/data /home/ishocon/webapp
-COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
-COPY webapp/ /home/ishocon/webapp
+COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 
 WORKDIR /home/ishocon
-EXPOSE 443
 
 COPY run.sh /home/ishocon/run.sh
 

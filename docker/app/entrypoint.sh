@@ -1,14 +1,13 @@
 #!/bin/bash -eux
 
-sudo nginx -t
-sudo service nginx start
-sudo service mysql start || true # なぜか失敗する(調査中)
-sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
-sudo service mysql start  # 正しく起動
+cd /home/ishocon
+sudo nginx -t && \
+sudo service nginx start && \
+sudo service mysql start && \
 sudo mysql -u root -pishocon -e 'CREATE DATABASE IF NOT EXISTS ishocon2;' && \
 sudo mysql -u root -pishocon -e "CREATE USER IF NOT EXISTS ishocon IDENTIFIED BY 'ishocon';" && \
 sudo mysql -u root -pishocon -e 'GRANT ALL ON *.* TO ishocon;' && \
-cd ~/data && tar -jxvf ishocon2.dump.tar.bz2 && sudo mysql -u root -pishocon ishocon2 < ~/data/ishocon2.dump
+tar -jxvf ~/data/ishocon2.dump.tar.bz2 -C ~/data && sudo mysql -u root -pishocon ishocon2 < ~/data/ishocon2.dump
 
 echo 'setup completed.'
 

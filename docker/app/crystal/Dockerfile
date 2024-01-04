@@ -7,12 +7,9 @@ RUN sudo apt install -y libssl1.0-dev gnupg2
 RUN curl -fsSL https://crystal-lang.org/install.sh | sudo bash
 
 # アプリケーション
-RUN mkdir /home/ishocon/data /home/ishocon/webapp
-COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
-COPY webapp/ /home/ishocon/webapp
+COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 
 WORKDIR /home/ishocon
-EXPOSE 443
 
 COPY run.sh /home/ishocon/run.sh
 
