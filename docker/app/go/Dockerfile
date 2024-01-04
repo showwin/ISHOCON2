@@ -2,6 +2,7 @@ FROM showwin/ishocon2_app_base:latest
 ENV APP_LANG 'Go'
 
 # Go のインストール
+RUN sudo apt-get update
 RUN sudo wget -q https://dl.google.com/go/go1.15.8.linux-amd64.tar.gz && \
     sudo tar -C /usr/local -xzf go1.15.8.linux-amd64.tar.gz && \
     sudo rm go1.15.8.linux-amd64.tar.gz

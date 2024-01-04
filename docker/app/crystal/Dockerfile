@@ -3,10 +3,8 @@ ENV APP_LANG 'Crystal'
 
 # Crystal のインストール
 RUN sudo apt-get update
-RUN sudo apt-get install -y gnupg2
-RUN curl -sL "https://keybase.io/crystal/pgp_keys.asc" | sudo apt-key add -
-RUN echo "deb https://dist.crystal-lang.org/apt crystal main" | sudo tee /etc/apt/sources.list.d/crystal.list
-RUN sudo apt install -y libssl1.0-dev crystal
+RUN sudo apt install -y libssl1.0-dev gnupg2
+RUN curl -fsSL https://crystal-lang.org/install.sh | sudo bash
 
 # アプリケーション
 RUN mkdir /home/ishocon/data /home/ishocon/webapp

@@ -4,6 +4,7 @@ export LANG=C.UTF-8
 export PATH="$HOME/.rbenv/bin:$PATH"
 if command -v rbenv 1>/dev/null 2>&1; then
   eval "$(rbenv init -)"
+  export PATH="$HOME/.rbenv/shims:$PATH"
 fi
 
 export PYENV_ROOT="$HOME/.pyenv"

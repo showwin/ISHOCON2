@@ -14,7 +14,9 @@ ENV PATH $PATH:$GOROOT/bin
 # MySQL のインストール
 RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-server mysql-server/root_password password ishocon'"]
 RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-service mysql-server/mysql-apt-config string 4'"]
-RUN apt-get install -y mysql-server
+
+RUN sudo apt-get update && \
+    apt-get install -y mysql-server
 
 COPY admin/ /root/admin/
 

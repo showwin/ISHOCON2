@@ -2,8 +2,8 @@ FROM showwin/ishocon2_app_base:latest
 ENV APP_LANG 'Ruby'
 
 # Ruby のインストール
-RUN sudo apt-get update
-RUN sudo apt-get install -y ruby-dev libmysqlclient-dev && \
+RUN sudo apt-get update && \
+    sudo apt-get install -y ruby-dev libmysqlclient-dev libffi6 libffi-dev libyaml-dev && \
     git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
