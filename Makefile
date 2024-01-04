@@ -36,7 +36,7 @@ build-app: check-lang build-base
 	-t ishocon2-app-$(ISHOCON_APP_LANG):latest \
 	-t $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest .;
 
-build: build-bench build-app
+build:
 	docker compose -f ./docker-compose.yml build;
 
 up:
