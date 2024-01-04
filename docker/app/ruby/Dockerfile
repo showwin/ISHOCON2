@@ -19,7 +19,7 @@ WORKDIR /home/ishocon
 RUN . ~/.bashrc && \
     cd /home/ishocon/webapp/ruby && \
     gem install bundler -v "1.16.1" &&  \
-    bundle update
+    bundle install
 
 COPY run.sh /home/ishocon/run.sh
 
