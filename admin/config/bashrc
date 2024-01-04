@@ -1,15 +1,11 @@
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
-export TZ=Asia/Tokyo
 
 export PATH="$HOME/.rbenv/bin:$PATH"
 if command -v rbenv 1>/dev/null 2>&1; then
   eval "$(rbenv init -)"
+  export PATH="$HOME/.rbenv/shims:$PATH"
 fi
-export PATH="$HOME/.rbenv/shims:$PATH"
-
-# 美しくないが bundle が見つからないと言われるので仕方ない
-# export PATH="$HOME/.gem/ruby/3.1.4/bin:$PATH"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -32,5 +28,3 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias grep='grep --color=auto'
-
-export ISHOCON_APP_LANG=ruby

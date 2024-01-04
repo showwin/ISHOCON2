@@ -17,11 +17,11 @@ jobs:
       fail-fast: false
       matrix:
         language:
-          # - "crystal"
-          # - "go"
-          # - "nodejs"
-          # - "php"
-          # - "python"
+          - "crystal"
+          - "go"
+          - "nodejs"
+          - "php"
+          - "python"
           - "ruby"
     env:
       ISHOCON_APP_LANG: ${{ matrix.language }}

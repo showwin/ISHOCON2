@@ -17,7 +17,7 @@ services:
     command: [/home/ishocon/run.sh]
     tty: true
     volumes:
-      # - storage_app:/var/lib/mysql
+      - storage_app:/var/lib/mysql
       - ./webapp:/home/ishocon/webapp
     ports:
       - "443:443"
