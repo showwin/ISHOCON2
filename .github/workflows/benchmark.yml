@@ -68,7 +68,7 @@ jobs:
           cache-from: type=registry,ref=${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latestst
           cache-to: type=inline
       - run: make build
-        timeout-minutes: 5
+        timeout-minutes: 10
       - run: make up bench-with-db-init
         timeout-minutes: 10
       - name: Dump docker logs on failure
