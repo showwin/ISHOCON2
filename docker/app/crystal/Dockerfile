@@ -15,10 +15,11 @@ RUN curl -fsSL https://packagecloud.io/84codes/crystal/gpgkey | gpg --dearmor | 
 
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
+RUN cd ~/webapp/crystal && shards install
 
 WORKDIR /home/ishocon
 
 COPY run.sh /home/ishocon/run.sh
 
 # FIXME: エラーで立ち上がらない
-CMD cd ~/webapp/crystal && shards install && crystal app.cr
+CMD crystal app.cr

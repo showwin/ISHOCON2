@@ -21,5 +21,3 @@ RUN LC_ALL=C.UTF-8 && LANG=C.UTF-8 && cd /home/ishocon/webapp/python && \
 WORKDIR /home/ishocon
 
 COPY run.sh /home/ishocon/run.sh
-
-CMD cd ~/webapp/python && /home/ishocon/.pyenv/shims/uwsgi --ini app.ini

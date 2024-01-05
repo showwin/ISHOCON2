@@ -19,9 +19,8 @@ ENV PATH $PATH:$GOROOT/bin
 
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
+RUN cd ~/webapp/go && GOARCH=${TARGETARCH} go build -x -o /tmp/webapp *.go
 
 WORKDIR /home/ishocon
 
 COPY run.sh /home/ishocon/run.sh
-
-CMD cd ~/webapp/go && GOARCH=${TARGETARCH} go build -x -o webapp *.go && ./webapp

@@ -60,9 +60,6 @@ function run_go() {
 
 function run_php() {
   cd "/home/ishocon/webapp/$app_lang"
-  sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-  sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
-  sudo service nginx reload
   sudo service php7.2-fpm restart
   make_tmp_file
   sudo tail -f /var/log/nginx/access.log /var/log/nginx/error.log
@@ -70,14 +67,12 @@ function run_php() {
 
 function run_nodejs() {
   cd "/home/ishocon/webapp/$app_lang"
-  sudo npm install
   make_tmp_file
   sudo node index.js
 }
 
 function run_crystal() {
   cd "/home/ishocon/webapp/$app_lang"
-  sudo shards install
   make_tmp_file
   sudo crystal app.cr
 }

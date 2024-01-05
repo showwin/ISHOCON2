@@ -17,11 +17,7 @@ RUN cd /home/ishocon/webapp/php && \
     sudo php -r "unlink('composer-setup.php');"
 
 WORKDIR /home/ishocon
+RUN sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig && \
+    sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
 
 COPY run.sh /home/ishocon/run.sh
-
-CMD cd ~/webapp/php && \
-    sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig && \
-    sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf && \
-    sudo service nginx reload && \
-    sudo service php7.2-fpm restart

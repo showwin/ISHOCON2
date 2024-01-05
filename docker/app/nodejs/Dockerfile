@@ -16,5 +16,3 @@ RUN cd /home/ishocon/webapp/nodejs && \
 WORKDIR /home/ishocon
 
 COPY run.sh /home/ishocon/run.sh
-
-CMD cd ~/webapp/nodejs && npm install && node index.js

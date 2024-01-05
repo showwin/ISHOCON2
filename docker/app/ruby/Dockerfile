@@ -21,5 +21,3 @@ RUN cd /home/ishocon/webapp/ruby && \
     sudo bundle install
 
 COPY run.sh /home/ishocon/run.sh
-
-CMD cd ~/webapp/ruby && unicorn -c unicorn_config.rb
