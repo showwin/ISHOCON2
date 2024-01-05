@@ -40,6 +40,8 @@ function make_tmp_file() {
 function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo rm -rf /tmp/unicorn.pid
+  gem install bundler -v "1.16.1"
+  bundle install
   make_tmp_file
   unicorn -c unicorn_config.rb
 }
