@@ -47,8 +47,8 @@ jobs:
           push: true
           file: ./docker/benchmarker/Dockerfile
           tags: ${{ env.UNAME }}/ishocon2-app-bench:latest
-          cache-from: type=registry,ref=${{ env.UNAME }}/ishocon2-app-bench:latest
-          cache-to: type=inline,ref=${{ env.UNAME }}/ishocon2-app-bench:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Build and push base image
         uses: docker/build-push-action@v5
         with:
@@ -56,8 +56,8 @@ jobs:
           push: true
           file: ./docker/app/base/Dockerfile
           tags: ${{ env.UNAME }}/ishocon2-app-base:latest
-          cache-from: type=registry,ref=${{ env.UNAME }}/ishocon2-app-base:latest
-          cache-to: type=inline,ref=${{ env.UNAME }}/ishocon2-app-base:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Build and push app image
         uses: docker/build-push-action@v5
         with:
@@ -66,8 +66,8 @@ jobs:
           tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
           file: ./docker/app/${{ env.ISHOCON_APP_LANG }}/Dockerfile
           build-args: BASE_IMAGE=${{ env.UNAME }}/ishocon2-app-base:latest
-          cache-from: type=registry,ref=${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latestst
-          cache-to: type=inline,ref=${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - run: make build
         timeout-minutes: 10
       - run: make up bench-with-db-init
