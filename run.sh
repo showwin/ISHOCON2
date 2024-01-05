@@ -43,7 +43,7 @@ function run_ruby() {
   gem install bundler -v "1.16.1"
   bundle install
   make_tmp_file
-  unicorn -c unicorn_config.rb
+  bundle exec unicorn -c unicorn_config.rb
 }
 
 function run_python() {
