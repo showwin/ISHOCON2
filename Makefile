@@ -46,12 +46,12 @@ build: build-bench build-app
 	docker compose -f ./docker-compose.yml build;
 
 pull:
-	docker pull $(UNAME)/ishocon2-app-bench:latest;
+	docker pull $(UNAME)/ishocon2-bench:latest;
 	docker pull $(UNAME)/ishocon2-app-base:latest;
 	docker pull $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest;
 
 push:
-	docker push $(UNAME)/ishocon2-app-bench:latest;
+	docker push $(UNAME)/ishocon2-bench:latest;
 	docker push $(UNAME)/ishocon2-app-base:latest;
 	docker push $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest;
 
