@@ -16,10 +16,9 @@ COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 WORKDIR /home/ishocon
 
 # ライブラリのインストール
-RUN bash -c "source ~/.bashrc" && \
-    cd /home/ishocon/webapp/ruby && \
-    gem install bundler -v "1.16.1" &&  \
-    bundle install
+RUN cd /home/ishocon/webapp/ruby && \
+    sudo gem install bundler -v "1.16.1" &&  \
+    sudo bundle install
 
 COPY run.sh /home/ishocon/run.sh
 
