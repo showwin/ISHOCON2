@@ -48,7 +48,7 @@ function run_php() {
   sudo service nginx reload
   sudo service php7.2-fpm restart
   make_tmp_file
-  tail -f /dev/null
+  sudo tail -f /var/log/nginx/access.log /var/log/nginx/error.log
 }
 
 function run_nodejs() {
