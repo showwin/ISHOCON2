@@ -53,16 +53,17 @@ SQL
 end
 
 def voice_of_supporter(candidate_ids : Array(Int32))
+  placeholders = candidate_ids.join(", ")
   query = <<-SQL
 SELECT keyword
 FROM votes
-WHERE candidate_id IN (?#{",?" * (candidate_ids.size - 1)})
+WHERE candidate_id IN (#{placeholders})
 GROUP BY keyword
 ORDER BY COUNT(*) DESC
 LIMIT 10
 SQL
   ret = [] of String
-  Database.query query, candidate_ids do |r|
+  Database.query query do |r|
     r.each do
       ret.push(r.read(String))
     end
