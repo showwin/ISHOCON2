@@ -22,7 +22,4 @@ RUN cd /home/ishocon/webapp/ruby && \
 
 COPY run.sh /home/ishocon/run.sh
 
-COPY docker/app/entrypoint.sh /home/ishocon/docker/app/entrypoint.sh
-ENTRYPOINT ["/home/ishocon/docker/app/entrypoint.sh"]
-
 CMD cd ~/webapp/ruby && unicorn -c unicorn_config.rb

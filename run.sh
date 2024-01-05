@@ -8,6 +8,23 @@ then
   exit 1
 fi
 
+echo "starting nginx and mysql..."
+cd /home/ishocon
+sudo nginx -t
+sudo service nginx start
+sudo service mysql start
+echo "nginx and mysql started."
+
+echo "setting up mysql user..."
+sudo mysql -u root -pishocon -e 'CREATE DATABASE IF NOT EXISTS ishocon2;'
+sudo mysql -u root -pishocon -e "CREATE USER IF NOT EXISTS ishocon IDENTIFIED BY 'ishocon';"
+sudo mysql -u root -pishocon -e 'GRANT ALL ON *.* TO ishocon;'
+echo "mysql user set up completed."
+
+echo "importing data..."
+tar -jxvf ~/data/ishocon2.dump.tar.bz2 -C ~/data && sudo mysql -u root -pishocon ishocon2 < ~/data/ishocon2.dump
+echo "data imported."
+
 check_message="start application w/ ${app_lang}..."
 
 source /home/ishocon/.bashrc

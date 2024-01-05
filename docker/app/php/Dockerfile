@@ -20,9 +20,6 @@ WORKDIR /home/ishocon
 
 COPY run.sh /home/ishocon/run.sh
 
-COPY docker/app/entrypoint.sh /home/ishocon/docker/app/entrypoint.sh
-ENTRYPOINT ["/home/ishocon/docker/app/entrypoint.sh"]
-
 CMD cd ~/webapp/php && \
     sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig && \
     sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf && \

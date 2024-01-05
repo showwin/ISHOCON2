@@ -17,7 +17,4 @@ WORKDIR /home/ishocon
 
 COPY run.sh /home/ishocon/run.sh
 
-COPY docker/app/entrypoint.sh /home/ishocon/docker/app/entrypoint.sh
-ENTRYPOINT ["/home/ishocon/docker/app/entrypoint.sh"]
-
 CMD cd ~/webapp/nodejs && npm install && node index.js
