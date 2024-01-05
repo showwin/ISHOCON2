@@ -67,6 +67,7 @@ jobs:
           file: ./docker/app/${{ env.ISHOCON_APP_LANG }}/Dockerfile
           cache-from: type=registry,ref=${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latestst
           cache-to: type=inline
+          build-args: BASE_IMAGE=${{ env.UNAME }}/ishocon2-app-base:latest
       - run: make build
         timeout-minutes: 10
       - run: make up bench-with-db-init
