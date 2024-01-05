@@ -3,11 +3,21 @@ ifeq ($(UNAME),)
 	UNAME = $(shell whoami)
 endif
 
-ARCH = $(shell uname -m)
+ifeq ($(ARCH),)
+	ARCH = $(shell uname -m)
+endif
 
 UBUNTU_VERSION = 18.04
 ifeq ($(ARCH), arm64)
 	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
+else ifeq ($(ARCH), aarch64)
+	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
+else ifeq ($(ARCH), armv7l)
+	BASE_IMAGE = armv7l/ubuntu:$(UBUNTU_VERSION)
+else ifeq ($(ARCH), ppc64le)
+	BASE_IMAGE = ppc64le/ubuntu:$(UBUNTU_VERSION)
+else ifeq ($(ARCH), s390x)
+	BASE_IMAGE = s390x/ubuntu:$(UBUNTU_VERSION)
 else
 	BASE_IMAGE = ubuntu:$(UBUNTU_VERSION)
 endif
@@ -19,7 +29,7 @@ build-base:
 	--build-arg BASE_IMAGE=$(BASE_IMAGE) \
 	-f ./docker/app/base/Dockerfile \
 	-t $(LOCAL_ISHOCON_BASE_IMAGE) \
-	-t $(UNAME)/ishocon2-app-base:latest .;
+	-t $(UNAME)/ishocon2-app-base:latest . --no-cache --progress=plain;
 
 build-bench:
 	docker build \
