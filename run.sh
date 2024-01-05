@@ -53,14 +53,18 @@ function run_python() {
 function run_go() {
   cd "/home/ishocon/webapp/$app_lang"
   # put output file into /tmp/go for it cannot be created in webapp somehow because of permission denied
-  mkdir -p /tmp/go
-  go build -o /tmp/go/webapp *.go
+  mkdir -p /tmp/go && \
+  go build -x -o /tmp/go/webapp *.go && \
   make_tmp_file
   /tmp/go/webapp
 }
 
 function run_php() {
   cd "/home/ishocon/webapp/$app_lang"
+  sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+  sudo php composer-setup.php && \
+  sudo php composer.phar install && \
+  sudo php -r "unlink('composer-setup.php');"
   sudo service php7.2-fpm restart
   make_tmp_file
   sudo tail -f /var/log/nginx/access.log /var/log/nginx/error.log
@@ -68,12 +72,14 @@ function run_php() {
 
 function run_nodejs() {
   cd "/home/ishocon/webapp/$app_lang"
+  sudo npm install
   make_tmp_file
   sudo node index.js
 }
 
 function run_crystal() {
   cd "/home/ishocon/webapp/$app_lang"
+  sudo shards install
   make_tmp_file
   sudo crystal app.cr
 }
