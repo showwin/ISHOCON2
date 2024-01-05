@@ -17,6 +17,7 @@ WORKDIR /home/ishocon
 
 # ライブラリのインストール
 RUN . ~/.bashrc && \
+    gem environment && \
     cd /home/ishocon/webapp/ruby && \
     gem install bundler -v "1.16.1" &&  \
     bundle install
