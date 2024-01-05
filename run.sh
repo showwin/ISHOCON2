@@ -12,6 +12,7 @@ echo "starting nginx and mysql..."
 cd /home/ishocon
 sudo nginx -t
 sudo service nginx start
+sudo chown -R mysql:mysql /var/lib/mysql
 sudo service mysql start
 echo "nginx and mysql started."
 
