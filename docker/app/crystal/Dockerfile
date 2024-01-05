@@ -1,10 +1,17 @@
 ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
 FROM ${BASE_IMAGE}
 
+RUN sudo apt update && \
+    sudo apt install -y \
+    gnupg2
+
 # Crystal のインストール
-RUN sudo apt-get update
-RUN sudo apt install -y libssl1.0-dev gnupg2
-RUN curl -fsSL https://crystal-lang.org/install.sh | sudo bash
+# ref: https://packagecloud.io/84codes/crystal
+RUN curl -fsSL https://packagecloud.io/84codes/crystal/gpgkey | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/84codes_crystal.gpg > /dev/null && \
+    . /etc/os-release && \
+    echo "deb https://packagecloud.io/84codes/crystal/$ID $VERSION_CODENAME main" | sudo tee /etc/apt/sources.list.d/84codes_crystal.list && \
+    sudo apt-get update && \
+    sudo apt-get install -y crystal
 
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
