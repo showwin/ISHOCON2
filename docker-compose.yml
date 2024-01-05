@@ -20,7 +20,6 @@ services:
     command: [/home/ishocon/run.sh]
     tty: true
     volumes:
-      - storage_app:/var/lib/mysql
       - ./webapp:/home/ishocon/webapp
     ports:
       - "443:443"
@@ -31,8 +30,6 @@ services:
     # ローカルで bench image をビルドしない場合は以下を利用すること
     # image: showwin/ishocon2_bench:latest
     command: tail -f /dev/null
-    volumes:
-      - storage_bench:/var/lib/mysql
     links:
       - app
     environment: 
@@ -40,7 +37,3 @@ services:
     depends_on:
       app:
         condition: service_healthy
-
-volumes:
-  storage_bench:
-  storage_app:
