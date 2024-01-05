@@ -54,6 +54,11 @@ pull:
 	docker pull $(UNAME)/ishocon2-app-base:latest;
 	docker pull $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest;
 
+push:
+	docker push $(UNAME)/ishocon2-app-bench:latest;
+	docker push $(UNAME)/ishocon2-app-base:latest;
+	docker push $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest;
+
 up:
 	docker compose up -d;
 
