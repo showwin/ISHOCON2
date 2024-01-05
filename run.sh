@@ -52,9 +52,6 @@ function run_python() {
 
 function run_go() {
   cd "/home/ishocon/webapp/$app_lang"
-  # put output file into /tmp/go for it cannot be created in webapp somehow because of permission denied
-  mkdir -p /tmp/go && \
-  go build -x -o /tmp/go/webapp *.go && \
   make_tmp_file
   /tmp/go/webapp
 }
