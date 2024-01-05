@@ -10,10 +10,10 @@ endif
 UBUNTU_VERSION = 18.04
 
 
-ifeq ($(filter $(ARCH),arm64 aarch64),)
-	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
-else ifeq ($(ARCH), x86_64)
+ifeq ($(ARCH), x86_64)
 	BASE_IMAGE = amd64/ubuntu:$(UBUNTU_VERSION)
+else ifeq ($(filter $(ARCH),arm64 aarch64),)
+	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
 else
 	BASE_IMAGE = ubuntu:$(UBUNTU_VERSION)
 endif
