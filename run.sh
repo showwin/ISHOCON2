@@ -45,7 +45,8 @@ function run_php() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
   sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
-  sudo service nginx reload  
+  sudo service nginx reload
+  sudo service php7.2-fpm restart
   make_tmp_file
   tail -f /dev/null
 }
