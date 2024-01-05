@@ -8,16 +8,12 @@ ifeq ($(ARCH),)
 endif
 
 UBUNTU_VERSION = 18.04
-ifeq ($(ARCH), arm64)
+
+
+ifeq ($(filter $(ARCH),arm64 aarch64),)
 	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
-else ifeq ($(ARCH), aarch64)
-	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
-else ifeq ($(ARCH), armv7l)
-	BASE_IMAGE = armv7l/ubuntu:$(UBUNTU_VERSION)
-else ifeq ($(ARCH), ppc64le)
-	BASE_IMAGE = ppc64le/ubuntu:$(UBUNTU_VERSION)
-else ifeq ($(ARCH), s390x)
-	BASE_IMAGE = s390x/ubuntu:$(UBUNTU_VERSION)
+else ifeq ($(ARCH), x86_64)
+	BASE_IMAGE = amd64/ubuntu:$(UBUNTU_VERSION)
 else
 	BASE_IMAGE = ubuntu:$(UBUNTU_VERSION)
 endif

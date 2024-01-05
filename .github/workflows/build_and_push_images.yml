@@ -27,11 +27,10 @@ jobs:
           - "python"
           - "ruby"
         arch:
+          - "arm64"
           - "arm64v8"
-          - "armv7l"
-          - "ppc64le"
-          - "s390x"
           - "x86_64"
+          - "unknown"
     env:
       ISHOCON_APP_LANG: ${{ matrix.language }}
       UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
