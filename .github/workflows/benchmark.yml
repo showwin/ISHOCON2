@@ -32,6 +32,8 @@ jobs:
         run: |
           make change-lang
           sed -i 's/ishocon2-app-base/${{ env.UNAME }}\/ishocon2-app-base/g' ./docker-compose.yml
+          sed -i 's/ishocon2-bench/${{ env.UNAME }}\/ishocon2-app-bench/g' ./docker-compose.yml
+          sed -i 's/ishocon2-app-${{ env.ISHOCON_APP_LANG }}/${{ env.UNAME }}\/ishocon2-app-${{ env.ISHOCON_APP_LANG }}/g' ./docker-compose.yml
           cat ./docker-compose.yml
       - name: Pull docker images
         run: make pull
