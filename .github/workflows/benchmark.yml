@@ -70,7 +70,7 @@ jobs:
           cache-to: type=gha,mode=max
       - run: make build
         timeout-minutes: 10
-      - run: make up bench-with-db-init
+      - run: make up bench-with-db-restart
         timeout-minutes: 10
       - name: Dump docker logs on failure
         if: failure()
