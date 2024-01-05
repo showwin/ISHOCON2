@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  benchmark:
-    name: Run benchmark
+  build-and-push-images:
+    name: Build and push images
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
@@ -35,7 +35,7 @@ jobs:
     env:
       ISHOCON_APP_LANG: ${{ matrix.language }}
       UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-      ARCH: ${{ matrix.arch }}  
+      ARCH: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
