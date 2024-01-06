@@ -74,9 +74,10 @@ down:
 bench:
 	docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload ${WORKLOAD}"
 
-bench-with-db-restart: up
+bench-with-db-init:
 	docker exec -i ishocon2-bench-1 sh -c " \
 		service mysql restart && \
+		tar -jxvf ~/admin/ishocon2.dump.tar.bz2 -C ~/admin && mysql -u root -pishocon ishocon2 < ~/admin/ishocon2.dump && \
 		./benchmark --ip app:443 --workload ${WORKLOAD} \
 	";
 

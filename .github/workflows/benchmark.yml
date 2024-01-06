@@ -37,7 +37,7 @@ jobs:
           cat ./docker-compose.yml
       - run: make build
         timeout-minutes: 10
-      - run: make up bench-with-db-restart
+      - run: make up bench-with-db-init
         timeout-minutes: 10
       - name: Dump docker logs on failure
         if: failure()
