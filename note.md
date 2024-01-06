@@ -390,3 +390,18 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 3"
 2024/01/06 15:07:42 投票者の感心がなくなりました
 2024/01/06 15:07:42 {"score": 3266, "success": 32658, "failure": 344}
 ```
+
+unicorn のワーカ数を増やして、/css へのアクセスは nginx にやらせる 29387
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 3"
+2024/01/06 15:10:42 Start GET /initialize
+2024/01/06 15:10:42 期日前投票を開始します
+2024/01/06 15:10:42 期日前投票が終了しました
+2024/01/06 15:10:42 投票を開始します  Workload: 3
+2024/01/06 15:11:28 投票が終了しました
+2024/01/06 15:11:28 投票者が結果を確認しています
+2024/01/06 15:11:43 投票者の感心がなくなりました
+2024/01/06 15:11:43 {"score": 29387, "success": 26243, "failure": 0}
+```
