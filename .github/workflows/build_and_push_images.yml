@@ -44,7 +44,7 @@ jobs:
           context: .
           push: true
           file: ./docker/benchmarker/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-bench:latest
+          tags: ${{ env.UNAME }}/ishocon2-bench:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64/v8
