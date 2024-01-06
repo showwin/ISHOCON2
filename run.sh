@@ -8,6 +8,24 @@ then
   exit 1
 fi
 
+echo "starting nginx and mysql..."
+cd /home/ishocon
+sudo nginx -t
+sudo service nginx start
+sudo chown -R mysql:mysql /var/lib/mysql
+sudo service mysql start
+echo "nginx and mysql started."
+
+echo "setting up mysql user..."
+sudo mysql -u root -pishocon -e 'CREATE DATABASE IF NOT EXISTS ishocon2;'
+sudo mysql -u root -pishocon -e "CREATE USER IF NOT EXISTS ishocon IDENTIFIED BY 'ishocon';"
+sudo mysql -u root -pishocon -e 'GRANT ALL ON *.* TO ishocon;'
+echo "mysql user set up completed."
+
+echo "importing data..."
+tar -jxvf ~/data/ishocon2.dump.tar.bz2 -C ~/data && sudo mysql -u root -pishocon ishocon2 < ~/data/ishocon2.dump
+echo "data imported."
+
 check_message="start application w/ ${app_lang}..."
 
 source /home/ishocon/.bashrc
@@ -22,8 +40,10 @@ function make_tmp_file() {
 function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo rm -rf /tmp/unicorn.pid
+  gem install bundler -v "1.16.1"
+  bundle install
   make_tmp_file
-  unicorn -c unicorn_config.rb
+  bundle exec unicorn -c unicorn_config.rb
 }
 
 function run_python() {
@@ -34,20 +54,19 @@ function run_python() {
 
 function run_go() {
   cd "/home/ishocon/webapp/$app_lang"
-  # put output file into /tmp/go for it cannot be created in webapp somehow because of permission denied
-  mkdir -p /tmp/go
-  go build -o /tmp/go/webapp *.go
   make_tmp_file
   /tmp/go/webapp
 }
 
 function run_php() {
   cd "/home/ishocon/webapp/$app_lang"
-  sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-  sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
-  sudo service nginx reload  
+  sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+  sudo php composer-setup.php && \
+  sudo php composer.phar install && \
+  sudo php -r "unlink('composer-setup.php');"
+  sudo service php7.2-fpm restart
   make_tmp_file
-  tail -f /dev/null
+  sudo tail -f /var/log/nginx/access.log /var/log/nginx/error.log
 }
 
 function run_nodejs() {

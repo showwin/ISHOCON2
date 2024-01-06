@@ -8,7 +8,7 @@ $ cd ISHOCON2
 言語を変更するための make command で dockerfile のパスなどを使いたい言語に合わせる。
 
 ```
-$ make change-lang LANG=${WHATEVER_LANGUAGE_U_WANT}
+$ make change-lang ISHOCON_APP_LANG=${WHATEVER_LANGUAGE_U_WANT}
 ```
 
 ```

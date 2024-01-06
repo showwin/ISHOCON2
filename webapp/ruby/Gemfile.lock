@@ -3,7 +3,7 @@ GEM
   specs:
     erubis (2.7.0)
     kgio (2.10.0)
-    mysql2 (0.4.4)
+    mysql2 (0.5.5)
     mysql2-cs-bind (0.0.6)
       mysql2
     rack (1.6.12)
@@ -24,7 +24,7 @@ PLATFORMS
 
 DEPENDENCIES
   erubis
-  mysql2
+  mysql2 (~> 0.5.3)
   mysql2-cs-bind
   sinatra
   unicorn
