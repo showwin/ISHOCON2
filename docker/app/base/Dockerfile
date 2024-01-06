@@ -7,7 +7,7 @@ ENV TZ Asia/Tokyo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && \
-    apt-get install -y wget sudo less vim tzdata \
+    apt-get install -y wget sudo less vim tzdata htop \
     nginx \
     # 各言語のインストールに必要なもの下準備 \
     curl git gcc make libssl-dev libreadline-dev

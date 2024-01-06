@@ -2,6 +2,8 @@ require 'sinatra/base'
 require 'mysql2'
 require 'mysql2-cs-bind'
 require 'erubis'
+require 'digest'
+require 'date'
 
 module Ishocon2
   class AuthenticationError < StandardError; end
@@ -13,6 +15,10 @@ class Ishocon2::WebApp < Sinatra::Base
   use Rack::Session::Cookie, key: 'rack.session', secret: session_secret
   set :erb, escape_html: true
   set :protection, true
+
+  configure do
+    set :last_voted_time, DateTime.now
+  end
 
   helpers do
     def config
@@ -40,6 +46,10 @@ class Ishocon2::WebApp < Sinatra::Base
       client.query_options.merge!(symbolize_keys: true)
       Thread.current[:ishocon2_db] = client
       client
+    end
+
+    def sha1(*args)
+      Digest::SHA1.hexdigest(args.join)
     end
 
     def candidates_cache
@@ -101,6 +111,9 @@ SQL
       sex_ratio[r[:sex].to_sym] += r[:count] || 0
     end
 
+    last_modified settings.last_voted_time
+    etag sha1(candidates, parties, sex_ratio)
+
     erb :index, locals: { candidates: candidates,
                           parties: parties,
                           sex_ratio: sex_ratio }
@@ -112,6 +125,10 @@ SQL
     return redirect '/' if candidate.nil?
     votes = db.xquery('SELECT IFNULL(SUM(count), 0) as count FROM votes WHERE candidate_id = ?', params[:id]).first&.fetch(:count, 0) || 0
     keywords = voice_of_supporter([params[:id]])
+
+    last_modified settings.last_voted_time
+    etag sha1(candidate, votes, keywords)
+
     erb :candidate, locals: { candidate: candidate,
                               votes: votes,
                               keywords: keywords }
@@ -126,6 +143,10 @@ SQL
     candidates = candidates_cache.select { |c| c[:political_party] == params[:name] }
     candidate_ids = candidates.map { |c| c[:id] }
     keywords = voice_of_supporter(candidate_ids)
+
+    last_modified settings.last_voted_time
+    etag sha1(votes, candidates, keywords)
+
     erb :political_party, locals: { political_party: params[:name],
                                     votes: votes,
                                     candidates: candidates,
@@ -166,6 +187,7 @@ SQL
       params[:keyword],
       params[:vote_count]
     )
+    settings.last_voted_time = DateTime.now
     return erb :vote, locals: { candidates: candidates, message: '投票に成功しました' }
   end
 

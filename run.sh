@@ -30,8 +30,9 @@ echo "modifying db schema..."
 sudo mysql -u root -pishocon ishocon2 < ~/scripts/modify_db_schema.sql
 echo "modifying db schema..."
 
-# data import 時の sloq-query.log を削除
-sudo rm -rf /var/log/mysql/slow-query.log
+# data import 時の sloq_query.log を削除
+sudo rm -rf /var/log/mysql/slow_query.log
+sudo touch /var/log/mysql/slow_query.log
 
 check_message="start application w/ ${app_lang}..."
 
