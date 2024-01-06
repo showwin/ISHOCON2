@@ -50,7 +50,8 @@ function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo rm -rf /tmp/unicorn.pid
   gem install bundler -v "2.5.4"
-  bundle install
+  # Gemfile.lock に write できないと言われるので sudo
+  sudo bundle install
   make_tmp_file
   bundle exec unicorn -c unicorn_config.rb -E production
 }
