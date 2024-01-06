@@ -48,6 +48,19 @@ class Ishocon2::WebApp < Sinatra::Base
       client
     end
 
+    def transaction(&block)
+      raise ArgumentError, "No block was given" unless block_given?
+      begin
+        db.query("BEGIN")
+        yield
+        db.query("COMMIT")
+      rescue => e
+        puts e.message
+        puts e.backtrace || 'no backtrace'
+        db.query("ROLLBACK")
+      end
+    end
+
     def sha1(*args)
       Digest::SHA1.hexdigest(args.join)
     end
@@ -74,7 +87,7 @@ SQL
       db.xquery(query)
     end
 
-    def voice_of_supporter(candidate_ids)
+    def voice_of_supporter_for_party(candidate_ids)
       query = <<SQL
 SELECT keyword
 FROM votes
@@ -86,8 +99,33 @@ SQL
       db.xquery(query, candidate_ids).map { |a| a[:keyword] }
     end
 
+    def voice_of_supporter(candidate_id)
+      query = <<SQL
+SELECT keyword
+FROM votes
+WHERE candidate_id = ?
+GROUP BY keyword
+ORDER BY IFNULL(SUM(count), 0) DESC
+LIMIT 10
+SQL
+      db.xquery(query, candidate_id).map { |a| a[:keyword] }
+    end
+
+    def voice_of_supporter_by_candidate_keyword(candidate_ids)
+      query = <<SQL
+SELECT content as keyword
+FROM candidate_keywords
+WHERE candidate_id IN (?)
+group by content
+ORDER BY IFNULL(SUM(count), 0) DESC
+LIMIT 10;
+SQL
+      db.xquery(query, candidate_ids).map { |a| a[:keyword] }
+    end
+
     def db_initialize
       db.query('DELETE FROM votes')
+      db.query('DELETE FROM candidate_keywords')
     end
   end
 
@@ -124,7 +162,7 @@ SQL
     candidate = candidates_cache.find { |c| c[:id] == params[:id].to_i }
     return redirect '/' if candidate.nil?
     votes = db.xquery('SELECT IFNULL(SUM(count), 0) as count FROM votes WHERE candidate_id = ?', params[:id]).first&.fetch(:count, 0) || 0
-    keywords = voice_of_supporter([params[:id]])
+    keywords = voice_of_supporter_by_candidate_keyword([params[:id]])
 
     last_modified settings.last_voted_time
     etag sha1(candidate, votes, keywords)
@@ -142,7 +180,7 @@ SQL
     end
     candidates = candidates_cache.select { |c| c[:political_party] == params[:name] }
     candidate_ids = candidates.map { |c| c[:id] }
-    keywords = voice_of_supporter(candidate_ids)
+    keywords = voice_of_supporter_by_candidate_keyword(candidate_ids)
 
     last_modified settings.last_voted_time
     etag sha1(votes, candidates, keywords)
@@ -180,13 +218,36 @@ SQL
       return erb :vote, locals: { candidates: candidates, message: '投票理由を記入してください' }
     end
 
-    result = db.xquery(
-      'INSERT INTO votes (user_id, candidate_id, keyword, count) VALUES (?, ?, ?, ?)',
-      user[:id],
-      candidate[:id],
-      params[:keyword],
-      params[:vote_count]
-    )
+    transaction do
+      db.xquery(
+        'INSERT INTO votes (user_id, candidate_id, keyword, count) VALUES (?, ?, ?, ?)',
+        user[:id],
+        candidate[:id],
+        params[:keyword],
+        params[:vote_count]
+      )
+      id = db.xquery(
+        'SELECT id from candidate_keywords WHERE candidate_id = ? AND content = ? FOR UPDATE',
+        candidate[:id],
+        params[:keyword],
+      ).first&.fetch(:id, nil)
+      if id.nil?
+        db.xquery(
+          'INSERT INTO candidate_keywords (candidate_id, content, count) VALUES (?, ?, ?)',
+          candidate[:id],
+          params[:keyword],
+          params[:vote_count],
+        )
+      else
+        db.xquery(
+          'UPDATE candidate_keywords SET count = count + ? WHERE id = ?',
+          params[:vote_count],
+          id,
+        )
+      end
+    end
+
+
     settings.last_voted_time = DateTime.now
     return erb :vote, locals: { candidates: candidates, message: '投票に成功しました' }
   end
