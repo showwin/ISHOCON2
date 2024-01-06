@@ -1,4 +1,4 @@
-#!/bin/bash -ux
+#!/bin/bash -eux
 
 service mysql restart
 
