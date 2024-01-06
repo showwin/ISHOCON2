@@ -15,7 +15,6 @@ RUN curl -fsSL https://packagecloud.io/84codes/crystal/gpgkey | gpg --dearmor | 
 
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
-RUN cd ~/webapp/crystal && shards install
 
 WORKDIR /home/ishocon
 
