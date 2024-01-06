@@ -8,7 +8,9 @@ RUN sudo apt-get update && \
 RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
     git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build && \
-    rbenv install 2.5.1 && rbenv rehash && rbenv global 2.5.1
+    rbenv install 3.2.2 && rbenv rehash && rbenv global 3.2.2
+
+ENV RUBY_YJIT_ENABLE=1
 
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
