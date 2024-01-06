@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: ./docker/app/ruby/Dockerfile
       args:
@@ -21,6 +21,7 @@ services:
     tty: true
     volumes:
       - ./webapp:/home/ishocon/webapp
+      - rbenv:/home/ishocon/.rbenv
     ports:
       - "443:443"
       - "3306:3306"
@@ -32,8 +33,11 @@ services:
     command: tail -f /dev/null
     links:
       - app
-    environment: 
+    environment:
       TARGET: app
     depends_on:
       app:
         condition: service_healthy
+
+volumes:
+  rbenv:
