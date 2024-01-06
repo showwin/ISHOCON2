@@ -8,6 +8,10 @@ then
   exit 1
 fi
 
+echo "start installing pt-query-digest..."
+sudo apt-get install -y percona-toolkit
+echo "pt-query-digest installed."
+
 echo "starting nginx and mysql..."
 cd /home/ishocon
 sudo nginx -t
