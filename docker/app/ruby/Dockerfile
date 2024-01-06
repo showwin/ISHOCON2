@@ -10,16 +10,19 @@ RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build && \
     rbenv install 3.2.2 && rbenv rehash && rbenv global 3.2.2
 
+WORKDIR /home/ishocon
+
 # install tools for analyze
 RUN sudo apt-get install -y percona-toolkit
 
+ARG TARGETARCH
+
 # install alp
-RUN curl -L -O https://github.com/tkuchiki/alp/releases/download/v1.0.21/alp_linux_${TARGETARCH}.zip && \
-    unzip alp_linux_amd64.zip && \
+RUN sudo curl -L -O https://github.com/tkuchiki/alp/releases/download/v1.0.21/alp_linux_${TARGETARCH}.zip && \
+    sudo unzip alp_linux_${TARGETARCH}.zip && \
+    sudo rm -rf unzip alp_linux_${TARGETARCH}.zip && \
     sudo mv alp /usr/local/bin/ && \
     alp --version
-
-ARG TARGETARCH
 
 ENV RUBY_YJIT_ENABLE=1
 
@@ -32,7 +35,5 @@ COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 
 # pt-query-digest 用のスクリプト配置
 COPY --chown=ishocon:ishocon --chmod=777 scripts/ /home/ishocon/scripts/
-
-WORKDIR /home/ishocon
 
 COPY run.sh /home/ishocon/run.sh

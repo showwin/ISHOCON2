@@ -8,10 +8,6 @@ then
   exit 1
 fi
 
-echo "start installing pt-query-digest..."
-sudo apt-get install -y percona-toolkit
-echo "pt-query-digest installed."
-
 echo "starting nginx and mysql..."
 cd /home/ishocon
 sudo nginx -t
@@ -29,6 +25,13 @@ echo "mysql user set up completed."
 echo "importing data..."
 tar -jxvf ~/data/ishocon2.dump.tar.bz2 -C ~/data && sudo mysql -u root -pishocon ishocon2 < ~/data/ishocon2.dump
 echo "data imported."
+
+echo "modifying db schema..."
+sudo mysql -u root -pishocon ishocon2 < ~/scripts/modify_db_schema.sql
+echo "modifying db schema..."
+
+# data import 時の sloq-query.log を削除
+sudo rm -rf /var/log/mysql/slow-query.log
 
 check_message="start application w/ ${app_lang}..."
 
