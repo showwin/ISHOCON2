@@ -23,7 +23,6 @@ COPY admin/config/bashrc /home/ishocon/.bashrc
 
 # Nginx の設定
 COPY admin/ssl/ /etc/nginx/ssl/
-COPY admin/config/nginx.conf /etc/nginx/nginx.conf
 
 # MySQL のインストールと dump, cnf の配置
 RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-server mysql-server/root_password password ishocon'"]

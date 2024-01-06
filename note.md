@@ -15,4 +15,19 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 3"
 2024/01/06 13:07:57 {"score": 8290, "success": 7770, "failure": 0}
 ```
 
+slow_query_log 設定のせいか遅くなった 6534
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 3"
+2024/01/06 13:43:29 Start GET /initialize
+2024/01/06 13:43:29 期日前投票を開始します
+2024/01/06 13:43:29 期日前投票が終了しました
+2024/01/06 13:43:29 投票を開始します  Workload: 3
+2024/01/06 13:44:15 投票が終了しました
+2024/01/06 13:44:15 投票者が結果を確認しています
+2024/01/06 13:44:31 投票者の感心がなくなりました
+2024/01/06 13:44:31 {"score": 6534, "success": 5942, "failure": 0}
+```
+
 
