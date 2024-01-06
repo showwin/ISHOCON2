@@ -1,0 +1,14 @@
+# crystal
+webapp/crystal/lib
+
+# nodejs
+webapp/nodejs/node_modules
+webapp/nodejs/npm-debug.log
+webapp/nodejs/dist
+
+# php
+webapp/php/vendor
+
+# ruby
+webapp/ruby/.bundle
+webapp/ruby/vendor/bundle

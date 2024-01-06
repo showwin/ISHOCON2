@@ -10,7 +10,8 @@ RUN sudo apt install -y nodejs npm
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 
 # ライブラリのインストール
-RUN cd /home/ishocon/webapp/nodejs
+RUN cd /home/ishocon/webapp/nodejs && \
+    npm install
 
 WORKDIR /home/ishocon
 

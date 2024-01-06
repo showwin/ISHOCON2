@@ -40,8 +40,6 @@ function make_tmp_file() {
 function run_ruby() {
   cd "/home/ishocon/webapp/$app_lang"
   sudo rm -rf /tmp/unicorn.pid
-  gem install bundler -v "1.16.1"
-  bundle install
   make_tmp_file
   bundle exec unicorn -c unicorn_config.rb
 }
@@ -60,10 +58,6 @@ function run_go() {
 
 function run_php() {
   cd "/home/ishocon/webapp/$app_lang"
-  sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-  sudo php composer-setup.php && \
-  sudo php composer.phar install && \
-  sudo php -r "unlink('composer-setup.php');"
   sudo service php7.2-fpm restart
   make_tmp_file
   sudo tail -f /var/log/nginx/access.log /var/log/nginx/error.log
@@ -71,9 +65,8 @@ function run_php() {
 
 function run_nodejs() {
   cd "/home/ishocon/webapp/$app_lang"
-  sudo npm install
   make_tmp_file
-  sudo node index.js
+  npm run start
 }
 
 function run_crystal() {
