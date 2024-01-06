@@ -1,4 +1,4 @@
-WORKLOAD = 3
+WORKLOAD = 4
 ifeq ($(UNAME),)
 	UNAME = $(shell whoami)
 endif
