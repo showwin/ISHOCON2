@@ -10,6 +10,7 @@ fi
 
 echo "starting nginx and mysql..."
 cd /home/ishocon
+sudo mkdir -p /var/nginx/cache
 sudo nginx -t
 sudo service nginx start
 sudo chown -R mysql:mysql /var/lib/mysql
@@ -51,7 +52,7 @@ function run_ruby() {
   gem install bundler -v "2.5.4"
   bundle install
   make_tmp_file
-  bundle exec unicorn -c unicorn_config.rb
+  bundle exec unicorn -c unicorn_config.rb -E production
 }
 
 function run_python() {
