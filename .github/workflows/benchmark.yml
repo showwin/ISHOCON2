@@ -39,6 +39,6 @@ jobs:
         timeout-minutes: 10
       - run: make up bench-with-db-init
         timeout-minutes: 10
-      - name: Dump docker logs on failure
-        if: failure()
+      - name: Dump docker logs
         uses: jwalton/gh-docker-logs@v2
+        if: ${{ always() }}
