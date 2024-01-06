@@ -526,3 +526,17 @@ docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
 2024/01/06 17:12:44 {"score": 177404, "success": 124652, "failure": 0}
 ```
 
+disable nginx log 287154
+
+```
+❯ make bench
+docker exec -i ishocon2-bench-1 sh -c "./benchmark --ip app:443 --workload 6"
+2024/01/06 17:17:46 Start GET /initialize
+2024/01/06 17:17:46 期日前投票を開始します
+2024/01/06 17:17:47 期日前投票が終了しました
+2024/01/06 17:17:47 投票を開始します  Workload: 6
+2024/01/06 17:18:32 投票が終了しました
+2024/01/06 17:18:32 投票者が結果を確認しています
+2024/01/06 17:18:47 投票者の感心がなくなりました
+2024/01/06 17:18:47 {"score": 287154, "success": 208826, "failure": 0}
+```
