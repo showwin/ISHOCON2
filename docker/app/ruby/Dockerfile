@@ -12,6 +12,9 @@ RUN PATH="$HOME/.rbenv/bin:$PATH" && \
 
 ENV RUBY_YJIT_ENABLE=1
 
+# MySQL の設定（頻繁に書き換えるので base じゃなくてここで COPY）
+COPY admin/config/my.app.cnf /etc/mysql/my.cnf
+
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 

@@ -32,7 +32,6 @@ RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-service mysql-server/
 RUN apt-get install -y mysql-server
 RUN mkdir -m 777 /home/ishocon/data
 COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
-COPY admin/config/my.app.cnf /etc/mysql/my.cnf
 
 USER ishocon
 
