@@ -56,6 +56,12 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           platforms: linux/amd64,linux/arm64/v8
+      - name: Add tags without UNAME
+        run: |
+          docker tag ${{ env.UNAME }}/ishocon2-bench:latest ishocon2-bench:latest
+          docker tag ${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }} ishocon2-bench:${{ env.DATE }}
+          docker tag ${{ env.UNAME }}/ishocon2-app-base:latest ishocon2-app-base:latest
+          docker tag ${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }} ishocon2-app-base:${{ env.DATE }}
       - name: Move new cache to the place where to be cached
         run: |
           echo "Temporary fix for cleaning up old cache."
