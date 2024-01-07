@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      ISHOCON_APP_LANG: ${{ matrix.language }}
       UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
     steps:
       - uses: actions/checkout@v4
@@ -27,15 +26,16 @@ jobs:
         with:
           username: ${{ env.UNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - run: make pull
       - name: Build and push bench image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           file: ./docker/benchmarker/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-bench:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: ${{ env.UNAME }}/ishocon2-bench:latest,${{ env.UNAME }}/ishocon2-bench:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8
       - name: Build and push base image
         uses: docker/build-push-action@v5
@@ -43,9 +43,9 @@ jobs:
           context: .
           push: true
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-base:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: ${{ env.UNAME }}/ishocon2-app-base:latest,${{ env.UNAME }}/ishocon2-app-base:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8
   build-app-images:
     name: Build app images
@@ -74,13 +74,14 @@ jobs:
         with:
           username: ${{ env.UNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - run: make pull
       - name: Build and push app image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest,${{ env.UNAME }}/ishocon2-app-${{ github.sha }}:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8
