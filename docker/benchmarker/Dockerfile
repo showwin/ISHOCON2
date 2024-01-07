@@ -18,10 +18,9 @@ ARG TARGETARCH
 RUN wget -q https://dl.google.com/go/go1.13.15.linux-${TARGETARCH}.tar.gz && \
     tar -C /usr/local -xzf go1.13.15.linux-${TARGETARCH}.tar.gz && \
     rm go1.13.15.linux-${TARGETARCH}.tar.gz
-ENV PATH $PATH:/usr/local/go/bin
-ENV GOROOT /usr/local/go
-ENV GOPATH $HOME/.local/go
-ENV PATH $PATH:$GOROOT/bin
+ENV PATH=$PATH:/usr/local/go/bin \
+    GOROOT=/usr/local/go \
+    GOPATH=$HOME/.local/go
 
 # build benchmark
 COPY admin/benchmarker /root/admin/benchmarker
@@ -39,7 +38,7 @@ RUN service mysql start && \
     mysql -u root -pishocon -e 'CREATE DATABASE IF NOT EXISTS ishocon2;' && \
     mysql -u root -pishocon -e "CREATE USER IF NOT EXISTS ishocon IDENTIFIED BY 'ishocon';" && \
     mysql -u root -pishocon -e 'GRANT ALL ON *.* TO ishocon;' && \
-    tar -jxvf ~/admin/ishocon2.dump.tar.bz2 -C ~/admin && mysql -u root -pishocon ishocon2 < ~/admin/ishocon2.dump && \ 
+    tar -jxvf ~/admin/ishocon2.dump.tar.bz2 -C ~/admin && mysql -u root -pishocon ishocon2 < ~/admin/ishocon2.dump && \
     rm -rf ~/admin/ishocon2.dump
 
 
