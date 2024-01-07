@@ -1,19 +1,18 @@
 ARG BASE_IMAGE=ubuntu:18.04
 FROM ${BASE_IMAGE}
 
-ENV LANG en_US.UTF-8
-ENV LC_ALL=C.UTF-8
-ENV TZ Asia/Tokyo
+
+USER root
+
+ENV LANG=en_US.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    TZ=Asia/Tokyo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && \
-    apt-get install -y sudo
-
-RUN sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN apt-get install -y  wget less vim tzdata nginx \
+    apt-get install -y sudo wget less vim tzdata nginx \
     # 各言語のインストールに必要なもの下準備 \
     curl git gcc make libssl-dev libreadline-dev && \
-    apt-get clean && \
     apt-get clean
 
 # ishocon ユーザ作成
