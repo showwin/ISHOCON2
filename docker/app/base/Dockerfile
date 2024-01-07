@@ -1,8 +1,5 @@
-ARG BASE_IMAGE=ubuntu:18.04
-FROM ${BASE_IMAGE}
+FROM ubuntu:18.04
 
-
-USER root
 
 ENV LANG=en_US.UTF-8 \
     LC_ALL=C.UTF-8 \

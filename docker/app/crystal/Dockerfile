@@ -1,5 +1,4 @@
-ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
-FROM ${BASE_IMAGE}
+FROM showwin/ishocon2_app_base:latest
 
 RUN sudo apt update && \
     sudo apt install -y \
