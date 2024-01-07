@@ -6,13 +6,15 @@ ENV LC_ALL=C.UTF-8
 ENV TZ Asia/Tokyo
 
 RUN apt-get update && \
-    apt-get install -y wget sudo less vim tzdata \
-    nginx \
-    # 各言語のインストールに必要なもの下準備 \
-    curl git gcc make libssl-dev libreadline-dev && \
-    apt-get clean
+    apt-get install -y sudo
 
 RUN sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get install -y  wget less vim tzdata nginx \
+    # 各言語のインストールに必要なもの下準備 \
+    curl git gcc make libssl-dev libreadline-dev && \
+    apt-get clean && \
+    apt-get clean
 
 # ishocon ユーザ作成
 RUN groupadd -g 1001 ishocon && \
