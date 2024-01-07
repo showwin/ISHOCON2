@@ -27,7 +27,6 @@ build-base:
 	-f ./docker/app/base/Dockerfile \
 	-t $(LOCAL_ISHOCON_BASE_IMAGE) \
 	-t $(UNAME)/ishocon2-app-base:latest \
-	-t $(UNAME)/ishocon2-app-base:${ARCH} \
 	.;
 
 build-bench:
