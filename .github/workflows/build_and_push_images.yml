@@ -18,6 +18,7 @@ jobs:
     env:
       UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
     steps:
+      - run: echo "DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -33,7 +34,7 @@ jobs:
           context: .
           push: true
           file: ./docker/benchmarker/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-bench:latest,${{ env.UNAME }}/ishocon2-bench:${{ github.sha }}
+          tags: ${{ env.UNAME }}/ishocon2-bench:latest,${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8
@@ -43,7 +44,7 @@ jobs:
           context: .
           push: true
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-base:latest,${{ env.UNAME }}/ishocon2-app-base:${{ github.sha }}
+          tags: ${{ env.UNAME }}/ishocon2-app-base:latest,${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8
@@ -66,6 +67,7 @@ jobs:
       ISHOCON_APP_LANG: ${{ matrix.language }}
       UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
     steps:
+      - run: echo "DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -81,7 +83,7 @@ jobs:
           context: .
           push: true
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest,${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}-${{ github.sha }}:latest
+          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest,${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:${{ env.DATE }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8

@@ -47,3 +47,5 @@ __pycache__/
 
 # go
 /webapp/go/webapp
+
+.secret
