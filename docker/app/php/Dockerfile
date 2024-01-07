@@ -3,8 +3,9 @@ FROM ${BASE_IMAGE}
 
 # PHP のインストール
 RUN sudo mkdir /run/php
-RUN sudo apt-get update
-RUN sudo apt install -y php php-fpm php-mysql php-cli
+RUN sudo apt-get update && \
+    sudo apt install -y php php-fpm php-mysql php-cli && \
+    sudo apt-get clean
 
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp

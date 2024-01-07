@@ -4,6 +4,7 @@ FROM ${BASE_IMAGE}
 # Ruby のインストール
 RUN sudo apt-get update && \
     sudo apt-get install -y ruby-dev libmysqlclient-dev libffi6 libffi-dev libyaml-dev bzip2 && \
+    sudo apt-get clean && \
     git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 RUN PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \

@@ -5,8 +5,6 @@ FROM ${BASE_IMAGE}
 ARG TARGETARCH
 ENV GOARCH ${TARGETARCH}
 
-RUN sudo apt-get update
-
 # Go のインストール
 ARG TARGETARCH
 RUN sudo wget -q https://dl.google.com/go/go1.15.8.linux-${TARGETARCH}.tar.gz && \

@@ -6,12 +6,8 @@ ENV LC_ALL=C.UTF-8
 ENV TZ Asia/Tokyo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# MySQL のインストール
-RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-server mysql-server/root_password password ishocon'"]
-RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-service mysql-server/mysql-apt-config string 4'"]
-
 RUN apt-get update && \
-    apt-get install -y wget mysql-server git tzdata
+    apt-get install -y wget tzdata
 
 # Go のインストール
 ARG TARGETARCH
@@ -32,6 +28,12 @@ COPY admin/ishocon2.dump.tar.bz2 /root/admin/ishocon2.dump.tar.bz2
 COPY admin/config/my.bench.cnf /etc/mysql/my.cnf
 
 WORKDIR /root
+
+# MySQL のインストール
+RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-server mysql-server/root_password password ishocon'"]
+RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-service mysql-server/mysql-apt-config string 4'"]
+RUN apt-get install -y mysql-server && \
+    apt-get clean
 
 # 初期データ投入
 RUN service mysql start && \

@@ -10,7 +10,8 @@ RUN apt-get update && \
     apt-get install -y wget sudo less vim tzdata \
     nginx \
     # 各言語のインストールに必要なもの下準備 \
-    curl git gcc make libssl-dev libreadline-dev
+    curl git gcc make libssl-dev libreadline-dev && \
+    apt-get clean
 
 # ishocon ユーザ作成
 RUN groupadd -g 1001 ishocon && \
