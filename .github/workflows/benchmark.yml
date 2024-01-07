@@ -51,7 +51,7 @@ jobs:
           context: .
           push: true
           file: ./docker/benchmarker/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }}
+          tags: ${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }},ishocon2-bench:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8
@@ -61,7 +61,7 @@ jobs:
           context: .
           push: true
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }}
+          tags: ${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }},ishocon2-app-base:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8
@@ -71,7 +71,7 @@ jobs:
           context: .
           push: true
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:${{ env.DATE }}
+          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:${{ env.DATE }},ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8

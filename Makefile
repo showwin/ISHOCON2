@@ -36,7 +36,6 @@ build-bench:
 	-f ./docker/benchmarker/Dockerfile \
 	-t ishocon2-bench:latest \
 	-t $(UNAME)/ishocon2-bench:latest \
-	-t $(UNAME)/ishocon2-bench:${ARCH} \
 	.;
 
 build-app: change-lang build-base
@@ -46,7 +45,6 @@ build-app: change-lang build-base
 	-f ./docker/app/$(ISHOCON_APP_LANG)/Dockerfile \
 	-t ishocon2-app-$(ISHOCON_APP_LANG):latest \
 	-t $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest \
-	-t $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):${ARCH} \
 	.;
 
 build: build-bench build-app
@@ -54,12 +52,15 @@ build: build-bench build-app
 
 pull-bench:
 	docker pull $(UNAME)/ishocon2-bench:latest;
+	docker tag $(UNAME)/ishocon2-bench:latest ishocon2-bench:latest;
 
 pull-base:
 	docker pull $(UNAME)/ishocon2-app-base:latest;
+	docker tag $(UNAME)/ishocon2-app-base:latest $(LOCAL_ISHOCON_BASE_IMAGE);
 
 pull-app: check-lang
 	docker pull $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest;
+	docker tag $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest ishocon2-app-$(ISHOCON_APP_LANG):latest;
 
 pull: pull-bench pull-base pull-app
 	@echo "Pull done."
