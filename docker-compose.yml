@@ -19,8 +19,6 @@ services:
       start_period: 120s
     command: [/home/ishocon/run.sh]
     tty: true
-    volumes:
-      - ./webapp:/home/ishocon/webapp
     ports:
       - "443:443"
       - "3306:3306"
