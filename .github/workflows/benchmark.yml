@@ -27,8 +27,6 @@ jobs:
       ISHOCON_APP_LANG: ${{ matrix.language }}
       UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
     steps:
-      - name: Set env
-        run: echo "DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Replace base image in docker-compose.yml with github actor name
         run: |
@@ -54,36 +52,30 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-${{ matrix.language }}
             ${{ runner.os }}-buildx
-      - name: Build and push bench image
+      - name: Build bench image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./docker/benchmarker/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }},ishocon2-bench:${{ env.DATE }}
+          tags: ${{ env.UNAME }}/ishocon2-bench:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           platforms: linux/amd64,linux/arm64/v8
-      - name: Build and push base image
+      - name: Build base image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }},ishocon2-app-base:${{ env.DATE }}
+          tags: ${{ env.UNAME }}/ishocon2-app-base:latest,ishocon2-app-base:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           platforms: linux/amd64,linux/arm64/v8
-      - name: Add tags without UNAME
-        run: |
-            docker tag ${{ env.UNAME }}/ishocon2-bench:latest ishocon2-bench:latest
-            docker tag ${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }} ishocon2-bench:${{ env.DATE }}
-            docker tag ${{ env.UNAME }}/ishocon2-app-base:latest ishocon2-app-base:latest
-            docker tag ${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }} ishocon2-app-base:${{ env.DATE }}
-      - name: Build and push app image
+      - name: Build app image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./docker/app/${{ env.ISHOCON_APP_LANG }}/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:${{ env.DATE }},ishocon2-app-${{ env.ISHOCON_APP_LANG }}:${{ env.DATE }}
+          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           platforms: linux/amd64,linux/arm64/v8

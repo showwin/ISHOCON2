@@ -40,8 +40,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          push: true
           file: ./docker/benchmarker/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-bench:latest,${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }},ishocon2-bench:latest,ishocon2-bench:${{ env.DATE }}
+          tags: ${{ env.UNAME }}/ishocon2-bench:latest,${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           platforms: linux/amd64,linux/arm64/v8
@@ -49,17 +50,15 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          push: true
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-base:latest,${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }},ishocon2-app-base:latest,ishocon2-app-base:${{ env.DATE }}
+          tags: ${{ env.UNAME }}/ishocon2-app-base:latest,${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           platforms: linux/amd64,linux/arm64/v8
-      - name: Push bench and base images
+      - name: Add tag to base image
         run: |
-          docker push ${{ env.UNAME }}/ishocon2-bench:latest
-          docker push ${{ env.UNAME }}/ishocon2-bench:${{ env.DATE }}
-          docker push ${{ env.UNAME }}/ishocon2-app-base:latest
-          docker push ${{ env.UNAME }}/ishocon2-app-base:${{ env.DATE }}
+          docker buildx imagetools create --tag ishocon2-app-base:latest ${{ env.UNAME }}/ishocon2-app-base:latest
       - name: Move new cache to the place where to be cached
         run: |
           echo "Temporary fix for cleaning up old cache."
