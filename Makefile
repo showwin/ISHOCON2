@@ -52,10 +52,17 @@ build-app: change-lang build-base
 build: build-bench build-app
 	@echo "Build done."
 
-pull:
+pull-bench:
 	docker pull $(UNAME)/ishocon2-bench:latest;
+
+pull-base:
 	docker pull $(UNAME)/ishocon2-app-base:latest;
+
+pull-app: check-lang
 	docker pull $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest;
+
+pull: pull-bench pull-base pull-app
+	@echo "Pull done."
 
 push:
 	docker push $(UNAME)/ishocon2-bench:latest;

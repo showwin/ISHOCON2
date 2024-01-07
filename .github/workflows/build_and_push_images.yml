@@ -26,7 +26,7 @@ jobs:
         with:
           username: ${{ env.UNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-      - run: make pull
+      - run: make pull-bench pull-base
       - name: Build and push bench image
         uses: docker/build-push-action@v5
         with:
@@ -74,14 +74,14 @@ jobs:
         with:
           username: ${{ env.UNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-      - run: make pull
+      - run: make pull-app
       - name: Build and push app image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           file: ./docker/app/base/Dockerfile
-          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest,${{ env.UNAME }}/ishocon2-app-${{ github.sha }}:latest
+          tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest,${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}-${{ github.sha }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           platforms: linux/amd64,linux/arm64/v8
