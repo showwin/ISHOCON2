@@ -4,7 +4,6 @@ FROM ${BASE_IMAGE}
 ENV LANG en_US.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV TZ Asia/Tokyo
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && \
     apt-get install -y wget sudo less vim tzdata \
@@ -12,6 +11,8 @@ RUN apt-get update && \
     # 各言語のインストールに必要なもの下準備 \
     curl git gcc make libssl-dev libreadline-dev && \
     apt-get clean
+
+RUN sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # ishocon ユーザ作成
 RUN groupadd -g 1001 ishocon && \
