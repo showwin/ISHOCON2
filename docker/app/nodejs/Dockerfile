@@ -11,7 +11,7 @@ COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 
 # ライブラリのインストール
 RUN cd /home/ishocon/webapp/nodejs && \
-    sudo npm install
+    npm install
 
 WORKDIR /home/ishocon
 

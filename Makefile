@@ -50,7 +50,7 @@ build-app: change-lang build-base
 	.;
 
 build: build-bench build-app
-	docker compose -f ./docker-compose.yml build;
+	@echo "Build done."
 
 pull:
 	docker pull $(UNAME)/ishocon2-bench:latest;
