@@ -1,4 +1,4 @@
-FROM showwin/ishocon2_app_base:latest
+FROM ishocon2-app-base:latest
 
 # NodeJS のインストール
 RUN sudo apt-get update

@@ -1,4 +1,4 @@
-FROM showwin/ishocon2_app_base:latest
+FROM ishocon2-app-base:latest
 
 # PHP のインストール
 RUN sudo mkdir /run/php

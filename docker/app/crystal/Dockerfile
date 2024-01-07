@@ -1,4 +1,4 @@
-FROM showwin/ishocon2_app_base:latest
+FROM ishocon2-app-base:latest
 
 RUN sudo apt update && \
     sudo apt install -y \
