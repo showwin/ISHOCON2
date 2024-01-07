@@ -7,7 +7,8 @@ ENV TZ Asia/Tokyo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && \
-    apt-get install -y wget tzdata
+    apt-get install -y wget tzdata mysql-server && \
+    apt-get clean
 
 # Go のインストール
 ARG TARGETARCH
@@ -32,8 +33,6 @@ WORKDIR /root
 # MySQL のインストール
 RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-server mysql-server/root_password password ishocon'"]
 RUN ["/bin/bash", "-c", "debconf-set-selections <<< 'mysql-service mysql-server/mysql-apt-config string 4'"]
-RUN apt-get install -y mysql-server && \
-    apt-get clean
 
 # 初期データ投入
 RUN service mysql start && \
