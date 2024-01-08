@@ -4,10 +4,6 @@ on:
     workflow_dispatch:
     push:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.sha }}
-  cancel-in-progress: true
-
 jobs:
   benchmark:
     name: Run benchmark
@@ -50,3 +46,6 @@ jobs:
       - name: Dump docker logs
         uses: jwalton/gh-docker-logs@v2
         if: ${{ always() }}
+  build:
+    needs: [benchmark]
+    uses: ./.github/workflows/build_and_push_images.yml
