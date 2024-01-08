@@ -2,9 +2,9 @@ name: Build and push images
 
 on:
     workflow_dispatch:
-    push:
     workflow_run:
-      workflows: ["Benchmark"]
+      workflows: [ Benchmark ]
+      branches: [ '**' ]
       types:
         - completed
 
