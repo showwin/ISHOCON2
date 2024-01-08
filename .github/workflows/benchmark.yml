@@ -50,3 +50,6 @@ jobs:
       - name: Dump docker logs
         uses: jwalton/gh-docker-logs@v2
         if: ${{ always() }}
+  build:
+    needs: [benchmark]
+    uses: ./.github/workflows/build_and_push_images.yml
