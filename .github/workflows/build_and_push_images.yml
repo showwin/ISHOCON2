@@ -3,16 +3,19 @@ name: Build and push images
 on:
     workflow_dispatch:
     push:
-      branches:
-        - master
+    workflow_run:
+      workflows: ["Benchmark"]
+      types:
+        - completed
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.sha }}
   cancel-in-progress: true
 
 jobs:
-  build-and-push-base-and-bench-images:
+  build-base-and-bench-images:
     name: Build and push base and bench images
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
@@ -69,7 +72,7 @@ jobs:
     name: Build app images
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    needs: build-and-push-base-and-bench-images
+    needs: build-base-and-bench-images
     strategy:
       fail-fast: false
       matrix:
