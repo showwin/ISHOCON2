@@ -26,6 +26,7 @@ build-bench:
 build-app: change-lang build-base
 	ISHOCON_APP_LANG=$(ISHOCON_APP_LANG:python)
 	docker build \
+	--build-arg BASE_IMAGE=$(LOCAL_ISHOCON_BASE_IMAGE) \
 	-f ./docker/app/$(ISHOCON_APP_LANG)/Dockerfile \
 	-t ishocon2-app-$(ISHOCON_APP_LANG):latest \
 	-t $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest \
