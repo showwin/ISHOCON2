@@ -56,9 +56,6 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           platforms: linux/amd64,linux/arm64/v8
-      - name: Add tag to base image
-        run: |
-          docker buildx imagetools create --tag ishocon2-app-base:latest ${{ env.UNAME }}/ishocon2-app-base:latest
       - name: Move new cache to the place where to be cached
         run: |
           echo "Temporary fix for cleaning up old cache."
