@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
+ARG BASE_IMAGE=ishocon2-app-base:latest
 FROM ${BASE_IMAGE}
 
 RUN sudo apt update && \
@@ -11,7 +11,8 @@ RUN curl -fsSL https://packagecloud.io/84codes/crystal/gpgkey | gpg --dearmor | 
     . /etc/os-release && \
     echo "deb https://packagecloud.io/84codes/crystal/$ID $VERSION_CODENAME main" | sudo tee /etc/apt/sources.list.d/84codes_crystal.list && \
     sudo apt-get update && \
-    sudo apt-get install -y crystal
+    sudo apt-get install -y crystal && \
+    sudo apt-get clean
 
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp

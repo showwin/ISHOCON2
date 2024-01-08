@@ -1,11 +1,5 @@
-ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
+ARG BASE_IMAGE=ishocon2-app-base:latest
 FROM ${BASE_IMAGE}
-
-# Go のインストール
-ARG TARGETARCH
-ENV GOARCH ${TARGETARCH}
-
-RUN sudo apt-get update
 
 # Go のインストール
 ARG TARGETARCH
@@ -21,7 +15,7 @@ ENV PATH $PATH:$GOROOT/bin
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 RUN cd ~/webapp/go && \
     mkdir -p /tmp/go && \
-    go build -x -o /tmp/go/webapp *.go
+    GOARCH=${TARGETARCH} go build -x -o /tmp/go/webapp *.go
 
 WORKDIR /home/ishocon
 

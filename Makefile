@@ -7,36 +7,20 @@ ifeq ($(ARCH),)
 	ARCH = $(shell uname -m)
 endif
 
-UBUNTU_VERSION = 18.04
-
-ifeq ($(ARCH), x86_64)
-	BASE_IMAGE = amd64/ubuntu:$(UBUNTU_VERSION)
-else ifeq ($(ARCH), arm64)
-	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
-else ifeq ($(ARCH), aarch64)
-	BASE_IMAGE = arm64v8/ubuntu:$(UBUNTU_VERSION)
-else
-	BASE_IMAGE = ubuntu:$(UBUNTU_VERSION)
-endif
-
 LOCAL_ISHOCON_BASE_IMAGE = ishocon2-app-base:latest
 
 build-base:
 	docker build \
-	--build-arg BASE_IMAGE=$(BASE_IMAGE) \
 	-f ./docker/app/base/Dockerfile \
 	-t $(LOCAL_ISHOCON_BASE_IMAGE) \
 	-t $(UNAME)/ishocon2-app-base:latest \
-	-t $(UNAME)/ishocon2-app-base:${ARCH} \
 	.;
 
 build-bench:
 	docker build \
-	--build-arg BASE_IMAGE=$(BASE_IMAGE) \
 	-f ./docker/benchmarker/Dockerfile \
 	-t ishocon2-bench:latest \
 	-t $(UNAME)/ishocon2-bench:latest \
-	-t $(UNAME)/ishocon2-bench:${ARCH} \
 	.;
 
 build-app: change-lang build-base
@@ -46,16 +30,25 @@ build-app: change-lang build-base
 	-f ./docker/app/$(ISHOCON_APP_LANG)/Dockerfile \
 	-t ishocon2-app-$(ISHOCON_APP_LANG):latest \
 	-t $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest \
-	-t $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):${ARCH} \
 	.;
 
 build: build-bench build-app
 	@echo "Build done."
 
-pull:
+pull-bench:
 	docker pull $(UNAME)/ishocon2-bench:latest;
+	docker tag $(UNAME)/ishocon2-bench:latest ishocon2-bench:latest;
+
+pull-base:
 	docker pull $(UNAME)/ishocon2-app-base:latest;
+	docker tag $(UNAME)/ishocon2-app-base:latest $(LOCAL_ISHOCON_BASE_IMAGE);
+
+pull-app: check-lang
 	docker pull $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest;
+	docker tag $(UNAME)/ishocon2-app-$(ISHOCON_APP_LANG):latest ishocon2-app-$(ISHOCON_APP_LANG):latest;
+
+pull: pull-bench pull-base pull-app
+	@echo "Pull done."
 
 push:
 	docker push $(UNAME)/ishocon2-bench:latest;

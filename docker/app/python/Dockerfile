@@ -1,9 +1,10 @@
-ARG BASE_IMAGE=showwin/ishocon2_app_base:latest
+ARG BASE_IMAGE=ishocon2-app-base:latest
 FROM ${BASE_IMAGE}
 
 # Python のインストール
-RUN sudo apt-get update
-RUN sudo apt-get install -y zlib1g-dev
+RUN sudo apt-get update && \
+    sudo apt-get install -y zlib1g-dev && \
+    sudo apt-get clean
 RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
     PYENV_ROOT="$HOME/.pyenv" && PATH="$PYENV_ROOT/bin:$PATH" && \
     eval "$(pyenv init -)" && \
