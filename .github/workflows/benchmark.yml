@@ -4,10 +4,6 @@ on:
     workflow_dispatch:
     push:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.sha }}
-  cancel-in-progress: true
-
 jobs:
   benchmark:
     name: Run benchmark
@@ -17,12 +13,12 @@ jobs:
       fail-fast: false
       matrix:
         language:
-          # - "crystal"
+          - "crystal"
           - "go"
-          # - "nodejs"
-          # - "php"
-          # - "python"
-          # - "ruby"
+          - "nodejs"
+          - "php"
+          - "python"
+          - "ruby"
     env:
       ISHOCON_APP_LANG: ${{ matrix.language }}
       UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -50,3 +46,8 @@ jobs:
       - name: Dump docker logs
         uses: jwalton/gh-docker-logs@v2
         if: ${{ always() }}
+  build:
+    name: Build and push images
+    needs: [benchmark]
+    uses: './.github/workflows/build_and_push_images.yml'
+    secrets: inherit
