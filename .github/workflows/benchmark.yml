@@ -17,12 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         language:
-          - "crystal"
+          # - "crystal"
           - "go"
-          - "nodejs"
-          - "php"
-          - "python"
-          - "ruby"
+          # - "nodejs"
+          # - "php"
+          # - "python"
+          # - "ruby"
     env:
       ISHOCON_APP_LANG: ${{ matrix.language }}
       UNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
