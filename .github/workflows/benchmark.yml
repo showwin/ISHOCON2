@@ -47,5 +47,7 @@ jobs:
         uses: jwalton/gh-docker-logs@v2
         if: ${{ always() }}
   build:
+    name: Build and push images
     needs: [benchmark]
-    uses: ./.github/workflows/build_and_push_images.yml
+    uses: './.github/workflows/build_and_push_images.yml'
+    secrets: inherit
