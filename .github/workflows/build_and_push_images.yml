@@ -113,6 +113,7 @@ jobs:
           push: true
           file: ./docker/app/${{ env.ISHOCON_APP_LANG }}/Dockerfile
           tags: ${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:latest,${{ env.UNAME }}/ishocon2-app-${{ env.ISHOCON_APP_LANG }}:${{ env.DATE }}
+          build-args: BASE_IMAGE=${{ env.UNAME }}/ishocon2-app-base:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           platforms: linux/amd64,linux/arm64/v8

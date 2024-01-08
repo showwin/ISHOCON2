@@ -1,4 +1,5 @@
-FROM ishocon2-app-base:latest
+ARG BASE_IMAGE=ishocon2-app-base:latest
+FROM ${BASE_IMAGE}
 
 RUN sudo apt update && \
     sudo apt install -y \
