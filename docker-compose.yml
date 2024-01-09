@@ -1,26 +1,37 @@
-version: '3.0'
+version: '3.9'
 services:
   app:
     build: 
       context: .
       dockerfile: ./docker/app/python/Dockerfile
-    command: tail -f /dev/null
-    volumes:
-      - storage_app:/var/lib/mysql
-      - ./webapp:/home/ishocon/webapp
+      args:
+        BASE_IMAGE: ishocon2-app-base:latest
+        # ローカルで base image をビルドしない場合は以下を利用すること
+        # BASE_IMAGE: showwin/ishocon2_app_base:latest
+    image: ishocon2-app-python:latest
+    environment:
+      ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
+    healthcheck:
+      test: ["CMD", "test", "-f", "/tmp/ishocon-app"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 120s
+    command: [/home/ishocon/run.sh]
+    tty: true
     ports:
       - "443:443"
+      - "3306:3306"
 
   bench:
-    image: showwin/ishocon2_bench:latest
+    image: ishocon2-bench:latest
+    # ローカルで bench image をビルドしない場合は以下を利用すること
+    # image: showwin/ishocon2_bench:latest
     command: tail -f /dev/null
-    volumes:
-      - storage_bench:/var/lib/mysql
     links:
       - app
     environment: 
-      - TARGET=app
-
-volumes:
-  storage_bench:
-  storage_app:
+      TARGET: app
+    depends_on:
+      app:
+        condition: service_healthy

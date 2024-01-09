@@ -5,16 +5,11 @@ $ git clone git@github.com:showwin/ISHOCON2.git
 $ cd ISHOCON2
 ```
 
-`docker-compose.yaml` の
+言語を変更するための make command で dockerfile のパスなどを使いたい言語に合わせる。
+
 ```
-version: '3.0'
-services:
-  app:
-    build: 
-      context: .
-      dockerfile: ./docker/app/python/Dockerfile
+$ make change-lang ISHOCON_APP_LANG=${WHATEVER_LANGUAGE_U_WANT}
 ```
-で dockerfile のパスを使いたい言語に合わせる。
 
 ```
 $ docker-compose build
@@ -43,6 +38,12 @@ $ docker exec -it ishocon2_app_1 /bin/bash
 ## ベンチマーカー
 
 ```
-$ docker exec -it ishocon2_bench_1 /bin/bash
+$ docker exec -it ishocon2-bench-1 /bin/bash
 $ ./benchmark --ip app:443  # docker-compose.yml で link しているので app で到達できます
+```
+
+上と同じものを実行できる benchmark 用の make command も用意されています。
+
+```
+$ make bench
 ```

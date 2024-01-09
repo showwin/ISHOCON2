@@ -1,28 +1,24 @@
-FROM showwin/ishocon2_app_base:latest
-ENV APP_LANG 'PHP'
+ARG BASE_IMAGE=ishocon2-app-base:latest
+FROM ${BASE_IMAGE}
 
 # PHP のインストール
 RUN sudo mkdir /run/php
-RUN sudo apt install -y php php-fpm php-mysql php-cli
+RUN sudo apt-get update && \
+    sudo apt install -y php php-fpm php-mysql php-cli && \
+    sudo apt-get clean
 
 # アプリケーション
-RUN mkdir /home/ishocon/data /home/ishocon/webapp
-COPY admin/ishocon2.dump.tar.bz2 /home/ishocon/data/ishocon2.dump.tar.bz2
-COPY webapp/ /home/ishocon/webapp
-COPY admin/config/bashrc /home/ishocon/.bashrc
-
-# ライブラリのインストール
-RUN cd /home/ishocon/webapp/php && \
-    sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    sudo php composer-setup.php && \
-    sudo php -r "unlink('composer-setup.php');" && \
-    sudo php ./composer.phar install
+COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
 
 WORKDIR /home/ishocon
-EXPOSE 443
 
-COPY docker/app/entrypoint.sh /home/ishocon/docker/app/entrypoint.sh
-ENTRYPOINT ["/home/ishocon/docker/app/entrypoint.sh"]
+RUN cd webapp/php && \
+    sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    sudo php composer-setup.php && \
+    sudo php composer.phar install && \
+    sudo php -r "unlink('composer-setup.php');"
 
-# FIXME: ここでアプリケーションが起動するように README を参考に書き直す
-CMD cd ~/webapp/php && cat README.md
+RUN sudo mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig && \
+    sudo cp /home/ishocon/webapp/php/php-nginx.conf /etc/nginx/nginx.conf
+
+COPY run.sh /home/ishocon/run.sh
