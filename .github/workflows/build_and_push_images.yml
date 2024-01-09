@@ -2,15 +2,12 @@ name: Build and push images
 
 on:
     workflow_dispatch:
-    workflow_call:
-      secrets:
-        DOCKER_HUB_USERNAME:
-          required: true
-        DOCKER_HUB_TOKEN:
-          required: true
-    push:
+    workflow_run:
+      workflows: ["Benchmark"]
       branches:
         - master
+      types:
+        - completed
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.sha }}
