@@ -15,4 +15,4 @@ sanic==20.12.7
 six==1.11.0
 ujson==5.4.0
 uvloop==0.11.2
-websockets==5.0.1
+websockets==9.1
