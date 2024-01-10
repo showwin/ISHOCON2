@@ -14,9 +14,9 @@
   "author": "Goryudyuma",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "ejs": "^2.6.1",
-    "express": "^4.16.3",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.7",
+    "express": "^4.17.3",
     "mysql": "^2.15.0"
   }
 }
