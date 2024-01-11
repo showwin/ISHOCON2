@@ -1,13 +1,11 @@
 version: '3.9'
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: ./docker/app/python/Dockerfile
       args:
-        BASE_IMAGE: ishocon2-app-base:latest
-        # ローカルで base image をビルドしない場合は以下を利用すること
-        # BASE_IMAGE: showwin/ishocon2_app_base:latest
+        BASE_IMAGE: showwin/ishocon2-app-base:latest
     image: ishocon2-app-python:latest
     environment:
       ISHOCON_APP_LANG: "${ISHOCON_APP_LANG-python}"
@@ -24,13 +22,11 @@ services:
       - "3306:3306"
 
   bench:
-    image: ishocon2-bench:latest
-    # ローカルで bench image をビルドしない場合は以下を利用すること
-    # image: showwin/ishocon2_bench:latest
+    image: showwin/ishocon2_bench:latest
     command: tail -f /dev/null
     links:
       - app
-    environment: 
+    environment:
       TARGET: app
     depends_on:
       app:

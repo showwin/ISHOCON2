@@ -3,13 +3,13 @@ FROM ${BASE_IMAGE}
 
 # Python のインストール
 RUN sudo apt-get update && \
-    sudo apt-get install -y zlib1g-dev && \
+    sudo apt-get install -y zlib1g-dev libffi-dev python3-dev default-libmysqlclient-dev build-essential pkg-config && \
     sudo apt-get clean
 RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
     PYENV_ROOT="$HOME/.pyenv" && PATH="$PYENV_ROOT/bin:$PATH" && \
     eval "$(pyenv init -)" && \
-    pyenv install 3.6.5 && pyenv global 3.6.5 && \
-    cd && curl https://bootstrap.pypa.io/pip/3.6/get-pip.py -o get-pip.py && python get-pip.py && rm get-pip.py
+    pyenv install 3.12.1 && pyenv global 3.12.1 && \
+    cd && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python get-pip.py && rm get-pip.py
 
 # アプリケーション
 COPY --chown=ishocon:ishocon webapp/ /home/ishocon/webapp
