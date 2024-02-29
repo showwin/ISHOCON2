@@ -8,7 +8,7 @@ GEM
     mysql2 (0.5.5)
     mysql2-cs-bind (0.0.6)
       mysql2
-    rack (2.2.8)
+    rack (2.2.8.1)
     rack-protection (2.2.3)
       rack
     raindrops (0.16.0)
