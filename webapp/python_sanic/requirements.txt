@@ -2,7 +2,7 @@ aiofiles==0.4.0
 aiomysql==0.0.19
 asn1crypto==0.24.0
 cffi==1.11.5
-cryptography==42.0.2
+cryptography==42.0.4
 httptools==0.0.11
 idna==2.7
 Jinja2==3.1.3
